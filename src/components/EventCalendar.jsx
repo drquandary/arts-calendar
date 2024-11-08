@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import '../styles/form.css';
+import * as React from "react";
+import { useState } from "react";
+import "../styles/form.css";
 
-function EventForm({ onSubmit }) {
+export default function EventForm({ onSubmit }) {
   const [formData, setFormData] = useState({
-    title: '',
-    organization: '',
-    date: '',
-    startTime: '',
-    endTime: '',
-    location: '',
-    category: ''
+    title: "",
+    organization: "",
+    date: "",
+    startTime: "",
+    endTime: "",
+    location: "",
+    category: ""
   });
 
   const handleSubmit = (e) => {
@@ -17,13 +18,13 @@ function EventForm({ onSubmit }) {
     onSubmit(formData);
     // Reset form
     setFormData({
-      title: '',
-      organization: '',
-      date: '',
-      startTime: '',
-      endTime: '',
-      location: '',
-      category: ''
+      title: "",
+      organization: "",
+      date: "",
+      startTime: "",
+      endTime: "",
+      location: "",
+      category: ""
     });
   };
 
@@ -137,5 +138,3 @@ function EventForm({ onSubmit }) {
     </form>
   );
 }
-
-export default EventForm;
