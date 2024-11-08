@@ -1,8 +1,9 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "../styles/form.css";
 
 export default function EventForm({ onSubmit }) {
+  const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     title: "",
     organization: "",
@@ -13,19 +14,50 @@ export default function EventForm({ onSubmit }) {
     category: ""
   });
 
-  const handleSubmit = (e) => {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
-    // Reset form
-    setFormData({
-      title: "",
-      organization: "",
-      date: "",
-      startTime: "",
-      endTime: "",
-      location: "",
-      category: ""
-    });
+    console.log("Form submitted with data:", formData);
+
+    try {
+      // Create FormData object to handle file upload
+      const submitData = new FormData();
+      
+      // Add all form fields
+      Object.keys(formData).forEach(key => {
+        submitData.append(key, formData[key]);
+      });
+
+      // Add file if one is selected
+      if (selectedFile) {
+        submitData.append('eventImage', selectedFile);
+      }
+
+      // In a real app, you'd send this to your server
+      console.log("Submitting form with file:", selectedFile?.name);
+      onSubmit(formData);
+
+      // Reset form
+      setFormData({
+        title: "",
+        organization: "",
+        date: "",
+        startTime: "",
+        endTime: "",
+        location: "",
+        category: ""
+      });
+      setSelectedFile(null);
+      setImagePreview(null);
+
+      alert("Event submitted!");
+    } catch (error) {
+      console.error("Error in form submission:", error);
+      alert("Error submitting event. Check console for details.");
+    }
   };
 
   const handleChange = (e) => {
@@ -36,10 +68,51 @@ export default function EventForm({ onSubmit }) {
     }));
   };
 
+  const handleFileSelect = (file) => {
+    if (file) {
+      if (file.type.startsWith('image/')) {
+        setSelectedFile(file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert("Please select an image file (PNG, JPG, etc)");
+      }
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    handleFileSelect(file);
+  };
+
+  const removeImage = () => {
+    setSelectedFile(null);
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="event-form">
       <h2>Submit New Event</h2>
-      
+
+      {/* Regular form fields */}
       <div className="form-group">
         <label htmlFor="title">Event Title*</label>
         <input
@@ -134,7 +207,50 @@ export default function EventForm({ onSubmit }) {
         </select>
       </div>
 
-      <button type="submit">Submit Event</button>
+      {/* Improved File Upload Area */}
+      <div className="form-group">
+        <label>Event Poster/Image</label>
+        <div
+          className={`file-upload-area ${isDragging ? 'dragging' : ''}`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleFileSelect(e.target.files[0])}
+            style={{ display: 'none' }}
+          />
+          {!imagePreview ? (
+            <div className="upload-prompt">
+              <div className="upload-icon">📁</div>
+              <p>Drag and drop an image here or click to select</p>
+              <p className="upload-subtitle">Supports: PNG, JPG, GIF</p>
+            </div>
+          ) : (
+            <div className="image-preview-container">
+              <img src={imagePreview} alt="Preview" className="image-preview" />
+              <button 
+                type="button" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeImage();
+                }}
+                className="remove-image"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <button type="submit" className="submit-button">
+        Submit Event
+      </button>
     </form>
   );
 }
