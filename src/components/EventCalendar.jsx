@@ -1,140 +1,132 @@
-import * as React from "react";
-import { useState } from "react";
-import "../styles/form.css";
+import React, { useState } from 'react';
+import '../styles/calendar.css';
 
-export default function EventForm({ onSubmit }) {
-  const [formData, setFormData] = useState({
-    title: "",
-    organization: "",
-    date: "",
-    startTime: "",
-    endTime: "",
-    location: "",
-    category: ""
-  });
+const EventCalendar = ({ events }) => {
+  const [view, setView] = useState('day');
+  const [currentDate, setCurrentDate] = useState(new Date());
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData);
-    // Reset form
-    setFormData({
-      title: "",
-      organization: "",
-      date: "",
-      startTime: "",
-      endTime: "",
-      location: "",
-      category: ""
+  // Format date for display
+  const formatDate = (date) => {
+    return new Intl.DateTimeFormat('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).format(date);
+  };
+
+  // Navigate between dates
+  const navigateDate = (direction) => {
+    const newDate = new Date(currentDate);
+    if (view === 'day') {
+      newDate.setDate(currentDate.getDate() + direction);
+    } else {
+      newDate.setDate(currentDate.getDate() + (direction * 7));
+    }
+    setCurrentDate(newDate);
+  };
+
+  // Get events for the current view
+  const getVisibleEvents = () => {
+    return events.filter(event => {
+      const eventDate = new Date(event.date);
+      if (view === 'day') {
+        return eventDate.toDateString() === currentDate.toDateString();
+      } else {
+        // For week view, get start and end of week
+        const weekStart = new Date(currentDate);
+        weekStart.setDate(currentDate.getDate() - currentDate.getDay());
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
+        return eventDate >= weekStart && eventDate <= weekEnd;
+      }
+    }).sort((a, b) => {
+      // Sort by date and then by start time
+      const dateCompare = new Date(a.date) - new Date(b.date);
+      if (dateCompare === 0) {
+        return a.startTime.localeCompare(b.startTime);
+      }
+      return dateCompare;
     });
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  // Get background color based on category
+  const getCategoryColor = (category) => {
+    const colors = {
+      EXHIBITION: '#FFD700',
+      WORKSHOP: '#98FB98',
+      PERFORMANCE: '#87CEEB',
+      LECTURE: '#DDA0DD',
+      SCREENING: '#F08080',
+      GATHERING: '#20B2AA',
+      OTHER: '#D3D3D3'
+    };
+    return colors[category] || colors.OTHER;
   };
 
   return (
-    <form onSubmit={handleSubmit} className="event-form">
-      <h2>Submit New Event</h2>
-      
-      <div className="form-group">
-        <label htmlFor="title">Event Title*</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="organization">Organization*</label>
-        <input
-          type="text"
-          id="organization"
-          name="organization"
-          value={formData.organization}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="date">Date*</label>
-        <input
-          type="date"
-          id="date"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div className="form-row">
-        <div className="form-group">
-          <label htmlFor="startTime">Start Time*</label>
-          <input
-            type="time"
-            id="startTime"
-            name="startTime"
-            value={formData.startTime}
-            onChange={handleChange}
-            required
-          />
+    <div className="calendar-container">
+      <div className="calendar-header">
+        <div className="view-controls">
+          <button 
+            className={`view-button ${view === 'day' ? 'active' : ''}`}
+            onClick={() => setView('day')}
+          >
+            Day View
+          </button>
+          <button 
+            className={`view-button ${view === 'week' ? 'active' : ''}`}
+            onClick={() => setView('week')}
+          >
+            Week View
+          </button>
         </div>
-
-        <div className="form-group">
-          <label htmlFor="endTime">End Time*</label>
-          <input
-            type="time"
-            id="endTime"
-            name="endTime"
-            value={formData.endTime}
-            onChange={handleChange}
-            required
-          />
+        
+        <div className="date-navigation">
+          <button onClick={() => navigateDate(-1)}>←</button>
+          <h2>{view === 'week' ? 'Week of ' : ''}{formatDate(currentDate)}</h2>
+          <button onClick={() => navigateDate(1)}>→</button>
         </div>
       </div>
 
-      <div className="form-group">
-        <label htmlFor="location">Location*</label>
-        <input
-          type="text"
-          id="location"
-          name="location"
-          value={formData.location}
-          onChange={handleChange}
-          required
-        />
+      <div className="events-container">
+        {getVisibleEvents().length > 0 ? (
+          getVisibleEvents().map((event, index) => (
+            <div 
+              key={index}
+              className="event-card"
+              style={{
+                borderLeft: `4px solid ${getCategoryColor(event.category)}`
+              }}
+            >
+              <div className="event-time">
+                {event.startTime} - {event.endTime}
+              </div>
+              <div className="event-main">
+                <h3 className="event-title">{event.title}</h3>
+                <p className="event-org">{event.organization}</p>
+                <p className="event-location">{event.location}</p>
+                {event.image && (
+                  <img 
+                    src={event.image} 
+                    alt={event.title} 
+                    className="event-image"
+                  />
+                )}
+                <span className="event-category">
+                  {event.category.toLowerCase()}
+                </span>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="no-events">
+            No events scheduled for this {view}
+          </div>
+        )}
       </div>
-
-      <div className="form-group">
-        <label htmlFor="category">Category*</label>
-        <select
-          id="category"
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select a category</option>
-          <option value="EXHIBITION">Exhibition</option>
-          <option value="WORKSHOP">Workshop</option>
-          <option value="PERFORMANCE">Performance</option>
-          <option value="LECTURE">Lecture</option>
-          <option value="SCREENING">Screening</option>
-          <option value="GATHERING">Gathering</option>
-          <option value="OTHER">Other</option>
-        </select>
-      </div>
-
-      <button type="submit">Submit Event</button>
-    </form>
+    </div>
   );
-}
+};
+
+export default EventCalendar;
