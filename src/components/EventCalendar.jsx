@@ -25,6 +25,14 @@ const EventCalendar = ({ events }) => {
     }
     setCurrentDate(newDate);
   };
+// Add this helper function at the top with your other functions
+  const formatTime = (time) => {
+    const [hours, minutes] = time.split(':');
+    const hour = parseInt(hours, 10);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const hour12 = hour % 12 || 12;
+    return `${hour12}:${minutes} ${ampm}`;
+  };
 
   // Get events for the current view
  const getVisibleEvents = () => {
@@ -113,23 +121,25 @@ const EventCalendar = ({ events }) => {
               }}
             >
               <div className="event-time">
-                {event.startTime} - {event.endTime}
+                {formatTime(event.startTime)} - {formatTime(event.endTime)}  // Changed from event.startTime/endTime
               </div>
-              <div className="event-main">
-                <h3 className="event-title">{event.title}</h3>
-                <p className="event-org">{event.organization}</p>
-                <p className="event-location">{event.location}</p>
-                {event.image && (
-                  <img 
-                    src={event.image} 
-                    alt={event.title} 
-                    className="event-image"
-                  />
-                )}
-                <span className="event-category">
-                  {event.category.toLowerCase()}
-                </span>
-              </div>
+            <div className="event-main">
+              <h3 className="event-title">{event.title}</h3>
+  <p className="event-org">{event.organization}</p>
+  <p className="event-location">{event.location}</p>
+  {event.imagePreview && (                // Changed from event.image to event.imagePreview
+    <div className="event-image-container">
+      <img 
+        src={event.imagePreview} 
+        alt={event.title} 
+        className="event-thumbnail"
+      />
+    </div>
+  )}
+  <span className="event-category">
+    {event.category.toLowerCase()}
+  </span>
+</div>
             </div>
           ))
         ) : (
