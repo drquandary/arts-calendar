@@ -5,18 +5,25 @@ import '../styles/calendar-page.css';
 
 function CalendarPage() {
   const [view, setView] = useState('calendar');
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState([]);  // Make sure this is initialized as an empty array
 
   const handleAddEvent = (newEvent) => {
+    console.log("Current events:", events);
     // Add the new event with a unique ID
     const eventWithId = {
       ...newEvent,
-      id: events.length + 1, // Simple ID generation
+      id: Date.now(), // Using timestamp as unique ID
     };
-    setEvents([...events, eventWithId]);
-    setView('calendar'); // Switch back to calendar view
-    alert('Event added successfully!');
+    console.log("Adding new event:", eventWithId);
+    setEvents(prevEvents => [...prevEvents, eventWithId]);
+    setView('calendar');
+    console.log("Updated events:", [...events, eventWithId]);
   };
+
+  // Add this useEffect to log events whenever they change
+  useEffect(() => {
+    console.log("Events updated:", events);
+  }, [events]);
 
   return (
     <div className="calendar-page">
@@ -37,20 +44,13 @@ function CalendarPage() {
           </button>
         </nav>
       </header>
-
       <main className="main-content">
         {view === 'calendar' ? (
-          <EventCalendar events={events} setEvents={setEvents} />
+          <EventCalendar events={events} />
         ) : (
           <EventForm onSubmit={handleAddEvent} />
         )}
       </main>
-
-      <footer className="footer">
-        <p>© 2024 Penn Arts Calendar</p>
-      </footer>
     </div>
   );
 }
-
-export default CalendarPage;
