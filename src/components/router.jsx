@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Switch, Route, Router } from "wouter";
+import { Routes, Route } from "react-router-dom";
 import Home from "../pages/home";
 import About from "../pages/about";
 import CalendarPage from "../pages/calendar";
@@ -10,10 +10,12 @@ import CalendarPage from "../pages/calendar";
 * Our site has three routes: Home, Calendar, and About
 * Each one is defined as a component in /pages
 */
-export default () => (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/calendar" component={CalendarPage} />
-    </Switch>
-);
+export default function PageRouter() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/calendar" element={<CalendarPage />} />
+    </Routes>
+  );
+}
