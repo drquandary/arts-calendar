@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import '../styles/calendar.css';
 
+const styles = {
+  primaryColor: '#FF5C00',  // Neon orange
+  backgroundColor: '#EEF4ED'
+};
 const EventCalendar = ({ events }) => {
   const [view, setView] = useState('day');
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -33,7 +37,6 @@ const EventCalendar = ({ events }) => {
     const hour12 = hour % 12 || 12;
     return `${hour12}:${minutes} ${ampm}`;
   };
-
   // Get events for the current view
  const getVisibleEvents = () => {
   console.log("Checking visible events. All events:", events);
@@ -85,71 +88,73 @@ const EventCalendar = ({ events }) => {
     return colors[category] || colors.OTHER;
   };
 
-  return (
-    <div className="calendar-container">
-      <div className="calendar-header">
-        <div className="view-controls">
-          <button 
-            className={`view-button ${view === 'day' ? 'active' : ''}`}
-            onClick={() => setView('day')}
-          >
-            Day View
-          </button>
-          <button 
-            className={`view-button ${view === 'week' ? 'active' : ''}`}
-            onClick={() => setView('week')}
-          >
-            Week View
-          </button>
-        </div>
-        
-        <div className="date-navigation">
-          <button onClick={() => navigateDate(-1)}>←</button>
-          <h2>{view === 'week' ? 'Week of ' : ''}{formatDate(currentDate)}</h2>
-          <button onClick={() => navigateDate(1)}>→</button>
-        </div>
+ return (
+  <div className="calendar-container" style={{ backgroundColor: styles.backgroundColor }}>
+    <div className="calendar-header">
+      <div className="view-controls">
+        <button 
+          className={`view-button ${view === 'day' ? 'active' : ''}`}
+          onClick={() => setView('day')}
+        >
+          Day View
+        </button>
+        <button 
+          className={`view-button ${view === 'week' ? 'active' : ''}`}
+          onClick={() => setView('week')}
+        >
+          Week View
+        </button>
       </div>
-
-      <div className="events-container">
-        {getVisibleEvents().length > 0 ? (
-          getVisibleEvents().map((event, index) => (
-            <div 
-              key={index}
-              className="event-card"
-              style={{
-                borderLeft: `4px solid ${getCategoryColor(event.category)}`
-              }}
-            >
-              <div className="event-time">
-                {formatTime(event.startTime)} - {formatTime(event.endTime)}  
-              </div>
-            <div className="event-main">
-            <h3 className="event-title">{event.title}</h3>
-            <p className="event-org">{event.organization}</p>
-            <p className="event-location">{event.location}</p>
-              {event.imagePreview && (                // Changed from event.image to event.imagePreview
-          <div className="event-image-container">
-              <img 
-                src={event.imagePreview} 
-                alt={event.title} 
-                className="event-thumbnail"
-            />
-          </div>
-  )}
-  <span className="event-category">
-    {event.category.toLowerCase()}
-  </span>
-</div>
-            </div>
-          ))
-        ) : (
-          <div className="no-events">
-            No events scheduled for this {view}
-          </div>
-        )}
+      
+      <div className="date-navigation">
+        <button onClick={() => navigateDate(-1)}>←</button>
+        <h2 style={{ color: styles.primaryColor }}>{view === 'week' ? 'Week of ' : ''}{formatDate(currentDate)}</h2>
+        <button onClick={() => navigateDate(1)}>→</button>
       </div>
     </div>
-  );
-};
+
+    <div className="events-container">
+      {getVisibleEvents().length > 0 ? (
+        getVisibleEvents().map((event, index) => (
+          <div 
+            key={index}
+            className="event-card"
+          >
+            <div className="event-time" style={{ 
+              color: '#000',
+              fontSize: '1.5rem',
+              fontWeight: 'bold',
+              borderBottom: `1px solid ${styles.primaryColor}`,
+              marginBottom: '8px'
+            }}>
+              {formatTime(event.startTime)}
+            </div>
+            <div className="event-main">
+              <h3 className="event-title" style={{
+                fontSize: '1.2rem',
+                margin: '8px 0'
+              }}>
+                {event.title}
+              </h3>
+              <p className="event-location" style={{
+                color: styles.primaryColor,
+                fontSize: '0.9rem',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                margin: '4px 0'
+              }}>
+                {event.location}
+              </p>
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className="no-events">
+          No events scheduled for this {view}
+        </div>
+      )}
+    </div>
+  </div>
+);
 
 export default EventCalendar;
