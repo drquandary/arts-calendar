@@ -16,7 +16,7 @@
 }
 
 .event-card {
-  border: 1px solid #ddd;
+  border: 1px solid #dddddd;
   padding: 15px;
   margin: 10px 0;
   border-radius: 4px;
@@ -24,18 +24,18 @@
 
 .event-title {
   margin: 0;
-  color: #1e4b8d;
+  color: #ff5f1f;
 }
 
 .event-time, .event-location, .event-org {
   margin: 5px 0;
-  color: #666;
+  color: #666666;
 }
 
 .category {
   display: inline-block;
   background: #e3f2fd;
-  color: #1e4b8d;
+  color: 	#ff5f1f;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 0.9em;

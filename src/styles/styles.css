@@ -8,11 +8,11 @@ to this section's matching END comment to see page-specific styles.
 ******************************************************************************/
 /* Our default values set as CSS variables */
 :root {
-  --color-bg: #FFFFA0;
-  --color-text-main: #000000;
-  --color-text-header: #2800FF;
-  --color-primary: #AFECE0;
-  --wrapper-height: 85vh;
+  --color-bg: black;
+  --color-text-main: black;
+  --color-text-header: black;
+  --color-primary: black;
+  --wrapper-height: 20vh;
   --image-max-width: 320px;
   --font-family: "HK Grotesk";
   --font-family-header: "HK Grotesk";
