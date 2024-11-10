@@ -8,8 +8,8 @@ export default defineConfig({
   },
   server: {
     host: "0.0.0.0",
-    port: 4173,  // Changed to a different port
-    strictPort: false,  // Allow fallback to another port if 4173 is in use
+    port: 5173,  // Changed to 5173
+    strictPort: false,
     hmr: {
       clientPort: 443
     }
