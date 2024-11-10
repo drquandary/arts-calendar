@@ -27,29 +27,33 @@ const EventCalendar = ({ events }) => {
   };
 
   // Get events for the current view
-  const getVisibleEvents = () => {
+ const getVisibleEvents = () => {
     return events.filter(event => {
-      const eventDate = new Date(event.date);
+      // Create date object in Eastern Time
+      const eventDate = new Date(event.date + 'T00:00:00-05:00');
+      const currentDateET = new Date(currentDate.toLocaleDateString() + 'T00:00:00-05:00');
+      
       if (view === 'day') {
-        return eventDate.toDateString() === currentDate.toDateString();
+        return eventDate.toDateString() === currentDateET.toDateString();
       } else {
         // For week view, get start and end of week
-        const weekStart = new Date(currentDate);
-        weekStart.setDate(currentDate.getDate() - currentDate.getDay());
+        const weekStart = new Date(currentDateET);
+        weekStart.setDate(currentDateET.getDate() - currentDateET.getDay());
         const weekEnd = new Date(weekStart);
         weekEnd.setDate(weekStart.getDate() + 6);
         return eventDate >= weekStart && eventDate <= weekEnd;
       }
     }).sort((a, b) => {
       // Sort by date and then by start time
-      const dateCompare = new Date(a.date) - new Date(b.date);
+      const dateA = new Date(a.date + 'T00:00:00-05:00');
+      const dateB = new Date(b.date + 'T00:00:00-05:00');
+      const dateCompare = dateA - dateB;
       if (dateCompare === 0) {
         return a.startTime.localeCompare(b.startTime);
       }
       return dateCompare;
     });
-  };
-
+};
   // Get background color based on category
   const getCategoryColor = (category) => {
     const colors = {

@@ -20,25 +20,24 @@ export default function EventForm({ onSubmit }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted with data:", formData);
-
+    
     try {
-      // Create FormData object to handle file upload
-      const submitData = new FormData();
+      // Create a date object in Eastern Time
+      const dateStr = formData.date;
+      console.log("Original date from form:", dateStr);
       
-      // Add all form fields
-      Object.keys(formData).forEach(key => {
-        submitData.append(key, formData[key]);
-      });
+      const dateInET = new Date(dateStr + 'T00:00:00-05:00');
+      console.log("Date object in ET:", dateInET);
+      
+      // Include the image preview in the form data
+      const updatedFormData = {
+        ...formData,
+        date: dateInET.toISOString().split('T')[0],
+        imagePreview: imagePreview // Add the image preview data
+      };
 
-      // Add file if one is selected
-      if (selectedFile) {
-        submitData.append('eventImage', selectedFile);
-      }
-
-      // In a real app, you'd send this to your server
-      console.log("Submitting form with file:", selectedFile?.name);
-      onSubmit(formData);
+      console.log("Submitting with adjusted date:", updatedFormData);
+      onSubmit(updatedFormData);
 
       // Reset form
       setFormData({
@@ -58,7 +57,7 @@ export default function EventForm({ onSubmit }) {
       console.error("Error in form submission:", error);
       alert("Error submitting event. Check console for details.");
     }
-  };
+};
 
   const handleChange = (e) => {
     const { name, value } = e.target;
