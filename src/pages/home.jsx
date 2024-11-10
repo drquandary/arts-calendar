@@ -1,7 +1,7 @@
 import * as React from "react";
-import { animated } from "@react-spring/web"
+import { animated } from "@react-spring/web";
 import { useWiggle } from "../hooks/wiggle";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";  // Changed from wouter to react-router-dom
 
 // Our language strings for the header
 const strings = [
@@ -23,7 +23,6 @@ function randomLanguage() {
 * This component is attached to the /about path in router.jsx
 * The function in app.jsx defines the page wrapper that this appears in along with the footer
 */
-
 export default function Home() {
   /* We use state to set the hello string from the array https://reactjs.org/docs/hooks-state.html
      - We'll call setHello when the user clicks to change the string
@@ -37,13 +36,13 @@ export default function Home() {
 
   // When the user clicks we change the header language
   const handleChangeHello = () => {
-    
     // Choose a new Hello from our languages
     const newHello = randomLanguage();
     
     // Call the function to set the state string in our component
     setHello(newHello);
   };
+
   return (
     <>
       <h1 className="title">{hello}!</h1>
@@ -69,7 +68,7 @@ export default function Home() {
         <p>
           This is the Glitch <strong>Hello React</strong> project. You can use
           it to build your own app. See more info in the{" "}
-          <Link href="/about">About</Link> page, and check out README.md in the
+          <Link to="/about">About</Link> page, and check out README.md in the
           editor for additional detail plus next steps you can take!
         </p>
       </div>
