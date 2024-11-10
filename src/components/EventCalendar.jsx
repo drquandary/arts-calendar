@@ -102,54 +102,53 @@ const EventCalendar = ({ events }) => {
       <div className="events-container">
         {getVisibleEvents().length > 0 ? (
           getVisibleEvents().map((event, index) => (
-            <div 
-  key={index}
-  className="event-card"
->
-  <div className="event-time" style={{ 
-    display: 'inline-block',  // Add this to make underline match text width
-    color: '#000',
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-    borderBottom: `1px solid ${styles.primaryColor}`,
-    marginBottom: '8px'
-  }}>
-    {formatTime(event.startTime)}
-  </div>
-  <div className="event-main">
-    <h3 className="event-title" style={{
-      fontSize: '1.2rem',
-      margin: '8px 0'
-    }}>
-      {event.title}
-    </h3>
-    <p className="event-location" style={{
-      color: styles.primaryColor,
-      fontSize: '0.9rem',
-      fontWeight: 'bold',
-      textTransform: 'uppercase',
-      margin: '4px 0'
-    }}>
-      {event.location}
-    </p>
-    {event.imagePreview && (  // Fix image display
-      <div className="event-image-container" style={{
-        marginTop: '10px',
-        maxWidth: '200px'
-      }}>
-        <img 
-          src={event.imagePreview} 
-          alt={event.title} 
-          style={{
-            width: '100%',
-            height: 'auto',
-            borderRadius: '4px'
-          }}
-        />
-      </div>
-    )}
-  </div>
-</div>
+            <div key={index} className="event-card">
+              <div className="event-time" style={{ 
+                display: 'inline-block',
+                color: '#000',
+                fontSize: '1.5rem',
+                fontWeight: 'bold',
+                borderBottom: `1px solid ${styles.primaryColor}`,
+                marginBottom: '8px',
+                paddingBottom: '2px'
+              }}>
+                {formatTime(event.startTime)}
+              </div>
+              <div className="event-main">
+              <h3 className="event-title" style={{
+              fontSize: '1.2rem',
+              margin: '8px 0',
+              fontWeight: 'normal'
+              }}>
+              {event.title}
+              </h3>
+            <p className="event-location" style={{
+            color: styles.primaryColor,
+            fontSize: '0.9rem',
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              margin: '4px 0'
+            }}>
+              {event.location}
+            </p>
+            {event.imagePreview && (  // Check that we're using the correct property name
+              <div className="event-image-container" style={{
+                marginTop: '10px',
+                maxWidth: '200px'
+              }}>
+                <img 
+                  src={event.imagePreview}  // Make sure this matches the property name
+                  alt={event.title} 
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    borderRadius: '4px'
+                  }}
+                />
+              </div>
+            )}
+          </div>
+            </div>
           ))
         ) : (
           <div className="no-events">

@@ -32,11 +32,10 @@ export default function EventForm({ onSubmit }) {
       // Include the image preview in the form data
       const updatedFormData = {
         ...formData,
-        date: dateInET.toISOString().split('T')[0],
-        imagePreview: imagePreview // Add the image preview data
-      };
+        imagePreview: imagePreview
+         };
 
-      console.log("Submitting with adjusted date:", updatedFormData);
+      console.log("Submitting form data:", updatedFormData);
       onSubmit(updatedFormData);
 
       // Reset form
