@@ -1,5 +1,5 @@
 .calendar-container {
-  background-color: transparent !important;
+  background-color: #CFE8EF !important;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   padding: 20px;
@@ -32,9 +32,9 @@
 }
 
 .view-button.active {
-  background: #1a73e8;
+  background: #FF5C00;
   color: white;
-  border-color: #1a73e8;
+  border-color: #FF5C00;
 }
 
 .date-navigation {
@@ -81,6 +81,7 @@
 .event-title {
   margin: 0 0 5px 0;
   font-size: 1.1rem;
+  color: #666666;
 }
 
 .event-org {
