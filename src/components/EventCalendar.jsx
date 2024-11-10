@@ -121,20 +121,20 @@ const EventCalendar = ({ events }) => {
               }}
             >
               <div className="event-time">
-                {formatTime(event.startTime)} - {formatTime(event.endTime)}  // Changed from event.startTime/endTime
+                {formatTime(event.startTime)} - {formatTime(event.endTime)}  
               </div>
             <div className="event-main">
-              <h3 className="event-title">{event.title}</h3>
-  <p className="event-org">{event.organization}</p>
-  <p className="event-location">{event.location}</p>
-  {event.imagePreview && (                // Changed from event.image to event.imagePreview
-    <div className="event-image-container">
-      <img 
-        src={event.imagePreview} 
-        alt={event.title} 
-        className="event-thumbnail"
-      />
-    </div>
+            <h3 className="event-title">{event.title}</h3>
+            <p className="event-org">{event.organization}</p>
+            <p className="event-location">{event.location}</p>
+              {event.imagePreview && (                // Changed from event.image to event.imagePreview
+          <div className="event-image-container">
+              <img 
+                src={event.imagePreview} 
+                alt={event.title} 
+                className="event-thumbnail"
+            />
+          </div>
   )}
   <span className="event-category">
     {event.category.toLowerCase()}
