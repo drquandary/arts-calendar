@@ -1,13 +1,22 @@
 /* Calendar Page Layout */
+.main-content, 
+.content, 
 .calendar-page {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100vw !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-.main-content {
-  margin-top: 20px;
-  padding-bottom: 80px;
+.calendar-container {
+  width: 100vw !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 20px !important;
+  background-color: #CFE8EF !important;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  min-height: 100vh;
 }
 
 /* Debug Info */
@@ -18,22 +27,10 @@
 }
 
 /* Calendar Container */
-.calendar-container {
-  background-color: #CFE8EF !important;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  padding: 20px;
-  min-height: 100vh;
-  max-width: 1400px; /* Increased from 1000px */
-  margin: 0 auto;
-  width: 90%; /* Added to ensure it takes up most of the screen */
-}
-
 .events-container {
-  max-width: 1200px; /* Increased from 800px */
-  margin: 0 auto;
+  width: 100%; /* Changed from max-width */
+  margin: 0;   /* Remove auto margin */
 }
-
 /* Navigation and Controls */
 .header-nav, .nav-links {
   display: flex;
@@ -124,7 +121,6 @@
 
 /* Events Display */
 .events-container {
-  max-width: 800px;
   margin: 0 auto;
 }
 
