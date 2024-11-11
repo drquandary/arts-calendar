@@ -28,7 +28,6 @@ function CalendarPage() {
   return (
     <div className="calendar-page">
       <header className="header">
-        <h1>Penn Arts Calendar</h1>
         <nav className="nav-buttons">
           <button 
             className={`nav-button ${view === 'calendar' ? 'active' : ''}`}

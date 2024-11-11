@@ -21,8 +21,6 @@ export default function CalendarPage() {
 
   return (
     <div className="calendar-page">
-      <h1>Penn Arts Calendar</h1>
-      
       {/* Debug info */}
       <div style={{fontSize: '12px', color: 'gray', margin: '10px 0'}}>
         Current view: {view}, Number of events: {events.length}
@@ -35,11 +33,11 @@ export default function CalendarPage() {
             setView('calendar');
           }}
           style={{
-            backgroundColor: view === 'calendar' ? '#1e4b8d' : 'white',
-            color: view === 'calendar' ? 'white' : '#1e4b8d',
+            backgroundColor: view === 'calendar' ? '#4400ff' : '#EEF4ED',
+            color: view === 'calendar' ? '#EEF4ED' : '#4400ff',
             padding: '8px 16px',
             margin: '0 5px',
-            border: '1px solid #1e4b8d',
+            border: '1px solid #4400ff',
             borderRadius: '4px',
             cursor: 'pointer'
           }}
@@ -52,11 +50,11 @@ export default function CalendarPage() {
             setView('submit');
           }}
           style={{
-            backgroundColor: view === 'submit' ? '#1e4b8d' : 'white',
-            color: view === 'submit' ? 'white' : '#1e4b8d',
+            backgroundColor: view === 'submit' ? '#4400ff' : '#EEF4ED',
+            color: view === 'submit' ? '#EEF4ED' : '#4400ff',
             padding: '8px 16px',
             margin: '0 5px',
-            border: '1px solid #1e4b8d',
+            border: '1px solid #4400ff',
             borderRadius: '4px',
             cursor: 'pointer'
           }}
