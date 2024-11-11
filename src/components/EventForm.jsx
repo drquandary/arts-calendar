@@ -12,7 +12,6 @@ export default function EventForm({ onSubmit }) {
     location: "",
     category: "",
     imageUrl: "",  // Now just a URL string
-    password: ""
   });
 
   const [error, setError] = useState("");
@@ -20,24 +19,14 @@ export default function EventForm({ onSubmit }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(""); // Clear any previous errors
-    
-    // Check password against environment variable
-  if (formData.password !== import.meta.env.VITE_EVENT_PASSWORD) {
-      setError("Invalid password. Event not submitted.");
-      return;
-    }
-    
+
     try {
       // Create a date object in Eastern Time
       const dateStr = formData.date;
       const dateInET = new Date(dateStr + 'T00:00:00-05:00');
-      
-      // Remove password from submitted data
-      const { password, ...eventDataWithoutPassword } = formData;
-      console.log('Password provided:', formData.password);
-console.log('Expected password:', import.meta.env.VITE_EVENT_PASSWORD);
-      console.log("Submitting form data:", eventDataWithoutPassword);
-      onSubmit(eventDataWithoutPassword);
+
+      console.log("Submitting form data:", formData);
+      onSubmit(formData);
 
       // Reset form
       setFormData({
@@ -49,7 +38,6 @@ console.log('Expected password:', import.meta.env.VITE_EVENT_PASSWORD);
         location: "",
         category: "",
         imageUrl: "",
-        password: ""
       });
 
       alert("Event submitted!");
@@ -58,7 +46,6 @@ console.log('Expected password:', import.meta.env.VITE_EVENT_PASSWORD);
       alert("Error submitting event. Check console for details.");
     }
   };
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -218,17 +205,6 @@ console.log('Expected password:', import.meta.env.VITE_EVENT_PASSWORD);
             </div>
           )}
         </div>
-      <div className="form-group">
-        <label htmlFor="password">Admin Password*</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-      </div>
 
       <button type="submit" className="submit-button">
         Submit Event
