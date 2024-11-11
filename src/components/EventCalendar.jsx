@@ -3,7 +3,7 @@ import '../styles/calendar.css';
 
 const styles = {
   primaryColor: '#4400ff',  // Neon blue
-  backgroundColor: '#EEF4ED'
+  backgroundColor: '#FAF9F6'
 };
 
 const EventCalendar = ({ events }) => {
