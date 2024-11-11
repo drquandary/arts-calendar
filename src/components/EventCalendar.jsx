@@ -92,13 +92,15 @@ const EventCalendar = ({ events }) => {
           </button>
         </div>
         
-       <div className="date-navigation">
+        <div className="date-navigation">
           <button onClick={() => navigateDate(-1)}>←</button>
           <h2 style={{ color: styles.primaryColor }}>
             {view === 'week' ? 'Week of ' : ''}{formatDate(currentDate)}
           </h2>
           <button onClick={() => navigateDate(1)}>→</button>
+        </div>
       </div>
+
       <div className="events-container">
         {getVisibleEvents().length > 0 ? (
           getVisibleEvents().map((event, index) => (
@@ -115,39 +117,39 @@ const EventCalendar = ({ events }) => {
                 {formatTime(event.startTime)}
               </div>
               <div className="event-main">
-              <h3 className="event-title" style={{
-              fontSize: '1.2rem',
-              margin: '8px 0',
-              fontWeight: 'normal'
-              }}>
-              {event.title}
-              </h3>
-            <p className="event-location" style={{
-            color: styles.primaryColor,
-            fontSize: '0.9rem',
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              margin: '4px 0'
-            }}>
-              {event.location}
-            </p>
-            {event.imagePreview && (  // Check that we're using the correct property name
-              <div className="event-image-container" style={{
-                marginTop: '10px',
-                maxWidth: '200px'
-              }}>
-                <img 
-                  src={event.imagePreview}  // Make sure this matches the property name
-                  alt={event.title} 
-                  style={{
-                    width: '100%',
-                    height: 'auto',
-                    borderRadius: '4px'
-                  }}
-                />
+                <h3 className="event-title" style={{
+                  fontSize: '1.2rem',
+                  margin: '8px 0',
+                  fontWeight: 'normal'
+                }}>
+                  {event.title}
+                </h3>
+                <p className="event-location" style={{
+                  color: styles.primaryColor,
+                  fontSize: '0.9rem',
+                  fontWeight: 'bold',
+                  textTransform: 'uppercase',
+                  margin: '4px 0'
+                }}>
+                  {event.location}
+                </p>
+                {event.imagePreview && (
+                  <div className="event-image-container" style={{
+                    marginTop: '10px',
+                    maxWidth: '200px'
+                  }}>
+                    <img 
+                      src={event.imagePreview}
+                      alt={event.title} 
+                      style={{
+                        width: '100%',
+                        height: 'auto',
+                        borderRadius: '4px'
+                      }}
+                    />
+                  </div>
+                )}
               </div>
-            )}
-          </div>
             </div>
           ))
         ) : (
