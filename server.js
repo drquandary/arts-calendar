@@ -3,11 +3,9 @@ console.log('Available environment variables:', {
   VITE_EVENT_PASSWORD: process.env.VITE_EVENT_PASSWORD,
   EVENT_PASSWORD: process.env.EVENT_PASSWORD
 });
-
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-
 const app = express();
 app.use(express.json());
 
@@ -59,9 +57,14 @@ app.get('/api/events', (req, res) => {
 });
 
 app.post('/api/events', (req, res) => {
-  console.log('Received event data:', req.body);
+  // Log the entire request object
+  console.log('Received request:', req);
+
+  // Log the request headers
+  console.log('Request headers:', req.headers);
+
   const { title, organization, date, startTime, endTime, location, category, imageUrl, password } = req.body;
-  
+
   // Password check logging and verification
   console.log('Server password check:', {
     provided: password,
@@ -79,7 +82,7 @@ app.post('/api/events', (req, res) => {
     INSERT INTO events (title, organization, date, startTime, endTime, location, category, imageUrl)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
-  
+
   db.run(sql, [title, organization, date, startTime, endTime, location, category, imageUrl],
     function(err) {
       if (err) {
