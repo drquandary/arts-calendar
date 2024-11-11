@@ -156,24 +156,24 @@ const EventCalendar = () => {
                 </p>
                 {event.imageUrl && (  // Changed from imagePreview to imageUrl
                   <div className="event-image-container" style={{
-                    marginTop: '10px',
-                    maxWidth: '200px'
-                  }}>
-                    <img 
-                      src={event.imageUrl}
-                      alt={event.title} 
-                      style={{
-                        width: '100%',
-                        height: 'auto',
-                        borderRadius: '4px'
-                      }}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.style.display = 'none';
-                      }}
-                    />
-                  </div>
-                )}
+  marginTop: '10px',
+  maxWidth: '200px'
+}}>
+  {event.imageUrl && (
+    <img
+      src={event.imageUrl}
+      alt={event.title}
+      style={{
+        width: '100%',
+        height: 'auto',
+        borderRadius: '4px'
+      }}
+      onError={(e) => {
+        e.target.onerror = null;
+        e.target.style.display = 'none';
+      }}
+    />
+  )}
               </div>
             </div>
           ))
