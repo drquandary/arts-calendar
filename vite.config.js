@@ -12,6 +12,12 @@ export default defineConfig({
     port: process.env.PORT || 3000,
     hmr: {
       clientPort: 443
+    },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true
+      }
     }
   }
 });

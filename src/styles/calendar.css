@@ -91,6 +91,19 @@ body {
   background: transparent;
   border-bottom: 2px solid #1C05B3;
 }
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #66666;
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #dc3545;
+  background-color: #f8d7da;
+  border-radius: 4px;
+}
 
 /* Events Display */
 .events-container {

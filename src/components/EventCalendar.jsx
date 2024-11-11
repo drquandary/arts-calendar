@@ -18,19 +18,22 @@ const EventCalendar = () => {
     fetchEvents();
   }, []);
 
-  const fetchEvents = async () => {
-    try {
-      const response = await fetch('/api/events');
-      if (!response.ok) throw new Error('Failed to fetch events');
-      const data = await response.json();
-      setEvents(data);
-    } catch (err) {
-      setError(err.message);
-      console.error('Error fetching events:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+ const fetchEvents = async () => {
+  try {
+    console.log('Fetching events...');
+    const response = await fetch('/api/events');
+    console.log('Response status:', response.status);
+    if (!response.ok) throw new Error('Failed to fetch events');
+    const data = await response.json();
+    console.log('Fetched events:', data); // See what data we're getting
+    setEvents(data);
+  } catch (err) {
+    console.error('Error fetching events:', err);
+    setError(err.message);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const formatDate = (date) => {
     return new Intl.DateTimeFormat('en-US', {

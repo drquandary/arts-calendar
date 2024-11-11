@@ -1,10 +1,18 @@
-// server.js
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-// Create/connect to SQLite database
-const db = new sqlite3.Database('.data/sqlite.db');
+const app = express();
+app.use(express.json());
+
+// Create/connect to SQLite database with better error handling
+const db = new sqlite3.Database('.data/sqlite.db', (err) => {
+  if (err) {
+    console.error('Error opening database:', err);
+  } else {
+    console.log('Connected to SQLite database');
+  }
+});
 
 // Create events table
 db.serialize(() => {
@@ -21,30 +29,41 @@ db.serialize(() => {
       imageUrl TEXT,
       createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
     )
-  `);
+  `, (err) => {
+    if (err) {
+      console.error('Error creating table:', err);
+    } else {
+      console.log('Events table ready');
+    }
+  });
 });
 
 // API endpoints
-const app = express();
-app.use(express.json());
-
-// Get all events
 app.get('/api/events', (req, res) => {
+  console.log('GET /api/events called');
   db.all('SELECT * FROM events ORDER BY date, startTime', [], (err, rows) => {
     if (err) {
+      console.error('Database error:', err);
       res.status(500).json({ error: err.message });
       return;
     }
+    console.log('Retrieved events:', rows);
     res.json(rows);
   });
 });
 
-// Add new event
 app.post('/api/events', (req, res) => {
-  const { title, organization, date, startTime, endTime, location, category, imageUrl } = req.body;
+  console.log('Received event data:', req.body);
+  const { title, organization, date, startTime, endTime, location, category, imageUrl, password } = req.body;
   
-  // First verify password
-  if (req.body.password !== process.env.EVENT_PASSWORD) {
+  // Log all the fields
+  console.log({
+    title, organization, date, startTime, endTime, location, category, imageUrl
+  });
+  
+  // Verify password (make sure this matches your .env file)
+  if (password !== process.env.VITE_EVENT_PASSWORD) {
+    console.log('Password verification failed');
     res.status(401).json({ error: 'Invalid password' });
     return;
   }
@@ -57,10 +76,36 @@ app.post('/api/events', (req, res) => {
   db.run(sql, [title, organization, date, startTime, endTime, location, category, imageUrl],
     function(err) {
       if (err) {
+        console.error('Database insert error:', err);
         res.status(500).json({ error: err.message });
         return;
       }
-      res.json({ id: this.lastID });
+      console.log('Event added successfully with ID:', this.lastID);
+      res.json({
+        id: this.lastID,
+        message: 'Event added successfully'
+      });
     }
   );
+});
+
+// Serve static files in production
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Handle React routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+// Handle cleanup on server shutdown
+process.on('SIGINT', () => {
+  db.close(() => {
+    console.log('Database connection closed');
+    process.exit(0);
+  });
 });

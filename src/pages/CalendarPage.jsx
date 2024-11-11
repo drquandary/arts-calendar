@@ -6,15 +6,64 @@ import '../styles/calendar.css';
 function CalendarPage() {
   const [view, setView] = useState('calendar');
   const [events, setEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleAddEvent = (newEvent) => {
-    const eventWithId = {
-      ...newEvent,
-      id: Date.now(),
-    };
-    setEvents(prevEvents => [...prevEvents, eventWithId]);
-    setView('calendar');
+  // Fetch events when component mounts
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      console.log('Fetching events...');
+      const response = await fetch('/api/events');
+      console.log('Response status:', response.status);
+      if (!response.ok) throw new Error('Failed to fetch events');
+      const data = await response.json();
+      console.log('Fetched events:', data);
+      setEvents(data);
+    } catch (err) {
+      console.error('Error fetching events:', err);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  const handleAddEvent = async (newEvent) => {
+    try {
+      console.log('Submitting new event:', newEvent);
+      const response = await fetch('/api/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newEvent)
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to add event');
+      }
+
+      console.log('Event submitted successfully');
+      // Fetch updated events list
+      await fetchEvents();
+      setView('calendar');
+    } catch (err) {
+      console.error('Error adding event:', err);
+      alert('Failed to add event: ' + err.message);
+    }
+  };
+
+  if (isLoading) {
+    return <div className="loading">Loading events...</div>;
+  }
+
+  if (error) {
+    return <div className="error">Error: {error}</div>;
+  }
 
   return (
     <div className="calendar-page">
