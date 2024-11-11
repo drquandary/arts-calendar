@@ -22,7 +22,7 @@ export default function EventForm({ onSubmit }) {
     setError(""); // Clear any previous errors
     
     // Check password against environment variable
-    if (formData.password !== import.meta.env.VITE_EVENT_PASSWORD) {
+  if (formData.password !== import.meta.env.VITE_EVENT_PASSWORD) {
       setError("Invalid password. Event not submitted.");
       return;
     }
@@ -34,7 +34,8 @@ export default function EventForm({ onSubmit }) {
       
       // Remove password from submitted data
       const { password, ...eventDataWithoutPassword } = formData;
-
+      console.log('Password provided:', formData.password);
+console.log('Expected password:', import.meta.env.VITE_EVENT_PASSWORD);
       console.log("Submitting form data:", eventDataWithoutPassword);
       onSubmit(eventDataWithoutPassword);
 
@@ -57,6 +58,7 @@ export default function EventForm({ onSubmit }) {
       alert("Error submitting event. Check console for details.");
     }
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;

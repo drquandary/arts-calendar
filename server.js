@@ -1,3 +1,9 @@
+// Add this at the very top of server.js
+console.log('Available environment variables:', {
+  VITE_EVENT_PASSWORD: process.env.VITE_EVENT_PASSWORD,
+  EVENT_PASSWORD: process.env.EVENT_PASSWORD
+});
+
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
@@ -56,18 +62,19 @@ app.post('/api/events', (req, res) => {
   console.log('Received event data:', req.body);
   const { title, organization, date, startTime, endTime, location, category, imageUrl, password } = req.body;
   
-  // Log all the fields
-  console.log({
-    title, organization, date, startTime, endTime, location, category, imageUrl
+  // Password check logging and verification
+  console.log('Server password check:', {
+    provided: password,
+    expected: process.env.VITE_EVENT_PASSWORD
   });
-  
-  // Verify password (make sure this matches your .env file)
+
   if (password !== process.env.VITE_EVENT_PASSWORD) {
     console.log('Password verification failed');
     res.status(401).json({ error: 'Invalid password' });
     return;
   }
 
+  // If password is correct, proceed with database insertion
   const sql = `
     INSERT INTO events (title, organization, date, startTime, endTime, location, category, imageUrl)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
