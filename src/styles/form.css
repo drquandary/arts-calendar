@@ -1,5 +1,6 @@
 .event-form {
-  max-width: 600px;
+  max-width: 1400px;
+  width: 90%;
   margin: 0 auto;
   padding: 20px;
   background: #fbfff1;
@@ -15,14 +16,14 @@
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
-  color: #333;
+  color: #333333;
 }
 
 .form-group input,
 .form-group select {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid #dddddd;
   border-radius: 4px;
   font-size: 1em;
 }
@@ -34,7 +35,7 @@
 }
 
 .file-upload-area {
-  border: 2px dashed #ddd;
+  border: 2px dashed #dddddd;
   border-radius: 8px;
   padding: 20px;
   text-align: center;
@@ -53,7 +54,7 @@
 }
 
 .upload-prompt {
-  color: #666;
+  color: #666666;
 }
 
 .upload-icon {
@@ -63,7 +64,7 @@
 
 .upload-subtitle {
   font-size: 0.8em;
-  color: #999;
+  color: #999999;
   margin-top: 5px;
 }
 
