@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../styles/calendar.css';
 
 const styles = {
-  primaryColor: '#FF5C00',  // Neon orange
+  primaryColor: '#4400ff',  // Neon blue
   backgroundColor: '#EEF4ED'
 };
 
