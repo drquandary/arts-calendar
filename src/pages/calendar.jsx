@@ -33,11 +33,11 @@ export default function CalendarPage() {
             setView('calendar');
           }}
           style={{
-            backgroundColor: view === 'calendar' ? '#4400ff' : '#EEF4ED',
-            color: view === 'calendar' ? '#EEF4ED' : '#4400ff',
+            backgroundColor: view === 'calendar' ? '#1C05B3' : '#fbfff1',
+            color: view === 'calendar' ? '#fbfff1' : '#1C05B3',
             padding: '8px 16px',
             margin: '0 5px',
-            border: '1px solid #4400ff',
+            border: '1px solid #1C05B3',
             borderRadius: '4px',
             cursor: 'pointer'
           }}
@@ -50,8 +50,8 @@ export default function CalendarPage() {
             setView('submit');
           }}
           style={{
-            backgroundColor: view === 'submit' ? '#4400ff' : '#EEF4ED',
-            color: view === 'submit' ? '#EEF4ED' : '#4400ff',
+            backgroundColor: view === 'submit' ? '#1C05B3' : '#EEF4ED',
+            color: view === 'submit' ? '#EEF4ED' : '#1C05B3',
             padding: '8px 16px',
             margin: '0 5px',
             border: '1px solid #4400ff',
