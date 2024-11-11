@@ -1,48 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EventCalendar from '../components/EventCalendar';
 import EventForm from '../components/EventForm';
 import '../styles/calendar-page.css';
 
 function CalendarPage() {
   const [view, setView] = useState('calendar');
-  const [events, setEvents] = useState([]);  // Make sure this is initialized as an empty array
+  const [events, setEvents] = useState([]);
 
   const handleAddEvent = (newEvent) => {
-    console.log("Current events:", events);
-    // Add the new event with a unique ID
     const eventWithId = {
       ...newEvent,
-      id: Date.now(), // Using timestamp as unique ID
+      id: Date.now(),
     };
-    console.log("Adding new event:", eventWithId);
     setEvents(prevEvents => [...prevEvents, eventWithId]);
     setView('calendar');
-    console.log("Updated events:", [...events, eventWithId]);
   };
 
-  // Add this useEffect to log events whenever they change
   useEffect(() => {
     console.log("Events updated:", events);
   }, [events]);
 
   return (
     <div className="calendar-page">
-      <header className="header">
-        <nav className="nav-buttons">
-          <button 
-            className={`nav-button ${view === 'calendar' ? 'active' : ''}`}
-            onClick={() => setView('calendar')}
-          >
-            View Calendar
-          </button>
-          <button 
-            className={`nav-button ${view === 'submit' ? 'active' : ''}`}
-            onClick={() => setView('submit')}
-          >
-            Submit Event
-          </button>
-        </nav>
-      </header>
       <main className="main-content">
         {view === 'calendar' ? (
           <EventCalendar events={events} />
@@ -50,6 +29,32 @@ function CalendarPage() {
           <EventForm onSubmit={handleAddEvent} />
         )}
       </main>
+      <footer className="page-footer">
+        <nav className="nav-links">
+          <a 
+            href="#calendar"
+            className={`nav-link ${view === 'calendar' ? 'active' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              setView('calendar');
+            }}
+          >
+            VIEW CALENDAR
+          </a>
+          <a 
+            href="#submit"
+            className={`nav-link ${view === 'submit' ? 'active' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              setView('submit');
+            }}
+          >
+            SUBMIT EVENT
+          </a>
+        </nav>
+      </footer>
     </div>
   );
 }
+
+export default CalendarPage;
