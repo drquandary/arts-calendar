@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/calendar.css';
 
 const styles = {
@@ -6,9 +6,31 @@ const styles = {
   backgroundColor: '#FAF9F6'
 };
 
-const EventCalendar = ({ events }) => {
+const EventCalendar = () => {
   const [view, setView] = useState('day');
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [events, setEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch events when component mounts
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch('/api/events');
+      if (!response.ok) throw new Error('Failed to fetch events');
+      const data = await response.json();
+      setEvents(data);
+    } catch (err) {
+      setError(err.message);
+      console.error('Error fetching events:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const formatDate = (date) => {
     return new Intl.DateTimeFormat('en-US', {
@@ -38,32 +60,20 @@ const EventCalendar = ({ events }) => {
   };
 
   const getVisibleEvents = () => {
-    console.log("Checking visible events. All events:", events);
-    console.log("Current date:", currentDate);
-
     return events.filter(event => {
       const eventDate = new Date(event.date + 'T00:00:00');
       const compareDate = new Date(currentDate);
       compareDate.setHours(0, 0, 0, 0);
 
-      console.log(`Comparing event ${event.title}:`, {
-        eventDate: eventDate.toDateString(),
-        compareDate: compareDate.toDateString()
-      });
-
       if (view === 'day') {
-        const matches = eventDate.toDateString() === compareDate.toDateString();
-        console.log("Day view match?", matches);
-        return matches;
+        return eventDate.toDateString() === compareDate.toDateString();
       } else {
         const weekStart = new Date(compareDate);
         weekStart.setDate(compareDate.getDate() - compareDate.getDay());
         const weekEnd = new Date(weekStart);
         weekEnd.setDate(weekStart.getDate() + 6);
         
-        const matches = eventDate >= weekStart && eventDate <= weekEnd;
-        console.log("Week view match?", matches);
-        return matches;
+        return eventDate >= weekStart && eventDate <= weekEnd;
       }
     }).sort((a, b) => {
       const dateCompare = new Date(a.date) - new Date(b.date);
@@ -73,6 +83,14 @@ const EventCalendar = ({ events }) => {
       return dateCompare;
     });
   };
+
+  if (isLoading) {
+    return <div className="loading">Loading events...</div>;
+  }
+
+  if (error) {
+    return <div className="error">Error loading events: {error}</div>;
+  }
 
   return (
     <div className="calendar-container" style={{ backgroundColor: styles.backgroundColor }}>
@@ -104,7 +122,7 @@ const EventCalendar = ({ events }) => {
       <div className="events-container">
         {getVisibleEvents().length > 0 ? (
           getVisibleEvents().map((event, index) => (
-            <div key={index} className="event-card">
+            <div key={event.id || index} className="event-card">
               <div className="event-time" style={{ 
                 display: 'inline-block',
                 color: '#000',
@@ -133,18 +151,22 @@ const EventCalendar = ({ events }) => {
                 }}>
                   {event.location}
                 </p>
-                {event.imagePreview && (
+                {event.imageUrl && (  // Changed from imagePreview to imageUrl
                   <div className="event-image-container" style={{
                     marginTop: '10px',
                     maxWidth: '200px'
                   }}>
                     <img 
-                      src={event.imagePreview}
+                      src={event.imageUrl}
                       alt={event.title} 
                       style={{
                         width: '100%',
                         height: 'auto',
                         borderRadius: '4px'
+                      }}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.style.display = 'none';
                       }}
                     />
                   </div>

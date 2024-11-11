@@ -1,9 +1,8 @@
 import * as React from "react";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import "../styles/form.css";
 
 export default function EventForm({ onSubmit }) {
-  const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     title: "",
     organization: "",
@@ -12,13 +11,11 @@ export default function EventForm({ onSubmit }) {
     endTime: "",
     location: "",
     category: "",
-    password: "" // Added password field
+    imageUrl: "",  // Now just a URL string
+    password: ""
   });
 
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [error, setError] = useState(""); // Added error state
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,20 +30,13 @@ export default function EventForm({ onSubmit }) {
     try {
       // Create a date object in Eastern Time
       const dateStr = formData.date;
-      console.log("Original date from form:", dateStr);
-      
       const dateInET = new Date(dateStr + 'T00:00:00-05:00');
-      console.log("Date object in ET:", dateInET);
       
-      // Include the image preview in the form data but remove password
+      // Remove password from submitted data
       const { password, ...eventDataWithoutPassword } = formData;
-      const updatedFormData = {
-        ...eventDataWithoutPassword,
-        imagePreview: imagePreview
-      };
 
-      console.log("Submitting form data:", updatedFormData);
-      onSubmit(updatedFormData);
+      console.log("Submitting form data:", eventDataWithoutPassword);
+      onSubmit(eventDataWithoutPassword);
 
       // Reset form
       setFormData({
@@ -57,10 +47,9 @@ export default function EventForm({ onSubmit }) {
         endTime: "",
         location: "",
         category: "",
+        imageUrl: "",
         password: ""
       });
-      setSelectedFile(null);
-      setImagePreview(null);
 
       alert("Event submitted!");
     } catch (error) {
@@ -75,46 +64,6 @@ export default function EventForm({ onSubmit }) {
       ...prev,
       [name]: value
     }));
-  };
-
-  const handleFileSelect = (file) => {
-    if (file) {
-      if (file.type.startsWith('image/')) {
-        setSelectedFile(file);
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setImagePreview(reader.result);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        alert("Please select an image file (PNG, JPG, etc)");
-      }
-    }
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files[0];
-    handleFileSelect(file);
-  };
-
-  const removeImage = () => {
-    setSelectedFile(null);
-    setImagePreview(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
   };
 
   return (
@@ -134,7 +83,6 @@ export default function EventForm({ onSubmit }) {
         </div>
       )}
 
-      {/* Regular form fields */}
       <div className="form-group">
         <label htmlFor="title">Event Title*</label>
         <input
@@ -229,48 +177,45 @@ export default function EventForm({ onSubmit }) {
         </select>
       </div>
 
-      {/* Image Upload Area */}
-      <div className="form-group">
-        <label>Event Poster/Image</label>
-        <div
-          className={`file-upload-area ${isDragging ? 'dragging' : ''}`}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          onClick={() => fileInputRef.current?.click()}
-        >
+     <div className="form-group">
+          <label htmlFor="imageUrl">Event Image URL</label>
           <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleFileSelect(e.target.files[0])}
-            style={{ display: 'none' }}
+            type="url"
+            id="imageUrl"
+            name="imageUrl"
+            value={formData.imageUrl}
+            onChange={handleChange}
+            placeholder="https://example.com/your-image.jpg"
           />
-          {!imagePreview ? (
-            <div className="upload-prompt">
-              <div className="upload-icon">📁</div>
-              <p>Drag and drop an image here or click to select</p>
-              <p className="upload-subtitle">Supports: PNG, JPG, GIF</p>
-            </div>
-          ) : (
+          <p className="help-text" style={{
+            fontSize: '0.85rem',
+            color: '#666',
+            marginTop: '4px'
+          }}>
+            Need to convert an image file to URL? Use a free service like{' '}
+            <a 
+              href="https://postimages.org/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{ color: '#1C05B3' }}
+            >
+              postimages.org
+            </a>
+          </p>
+          {formData.imageUrl && (
             <div className="image-preview-container">
-              <img src={imagePreview} alt="Preview" className="image-preview" />
-              <button 
-                type="button" 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  removeImage();
+              <img 
+                src={formData.imageUrl} 
+                alt="Preview" 
+                className="image-preview"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.style.display = 'none';
                 }}
-                className="remove-image"
-              >
-                ✕
-              </button>
+              />
             </div>
           )}
         </div>
-      </div>
-
-      {/* Password field added near the end */}
       <div className="form-group">
         <label htmlFor="password">Admin Password*</label>
         <input
