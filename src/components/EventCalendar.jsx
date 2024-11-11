@@ -92,13 +92,13 @@ const EventCalendar = ({ events }) => {
           </button>
         </div>
         
-        <div className="date-navigation">
+       <div className="date-navigation">
           <button onClick={() => navigateDate(-1)}>←</button>
-          <h2 style={{ color: styles.primaryColor }}>{view === 'week' ? 'Week of ' : ''}{formatDate(currentDate)}</h2>
+          <h2 style={{ color: styles.primaryColor }}>
+            {view === 'week' ? 'Week of ' : ''}{formatDate(currentDate)}
+          </h2>
           <button onClick={() => navigateDate(1)}>→</button>
-        </div>
       </div>
-
       <div className="events-container">
         {getVisibleEvents().length > 0 ? (
           getVisibleEvents().map((event, index) => (

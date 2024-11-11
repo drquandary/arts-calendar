@@ -16,12 +16,36 @@ function CalendarPage() {
     setView('calendar');
   };
 
-  useEffect(() => {
-    console.log("Events updated:", events);
-  }, [events]);
-
   return (
     <div className="calendar-page">
+      {/* Debug info */}
+      <div className="debug-info">
+        Current view: {view}, Number of events: {events.length}
+      </div>
+      
+      <nav className="nav-links header-nav">
+        <a 
+          href="#calendar"
+          className={`nav-link ${view === 'calendar' ? 'active' : ''}`}
+          onClick={(e) => {
+            e.preventDefault();
+            setView('calendar');
+          }}
+        >
+          VIEW CALENDAR
+        </a>
+        <a 
+          href="#submit"
+          className={`nav-link ${view === 'submit' ? 'active' : ''}`}
+          onClick={(e) => {
+            e.preventDefault();
+            setView('submit');
+          }}
+        >
+          SUBMIT EVENT
+        </a>
+      </nav>
+
       <main className="main-content">
         {view === 'calendar' ? (
           <EventCalendar events={events} />
@@ -29,30 +53,6 @@ function CalendarPage() {
           <EventForm onSubmit={handleAddEvent} />
         )}
       </main>
-      <footer className="page-footer">
-        <nav className="nav-links">
-          <a 
-            href="#calendar"
-            className={`nav-link ${view === 'calendar' ? 'active' : ''}`}
-            onClick={(e) => {
-              e.preventDefault();
-              setView('calendar');
-            }}
-          >
-            VIEW CALENDAR
-          </a>
-          <a 
-            href="#submit"
-            className={`nav-link ${view === 'submit' ? 'active' : ''}`}
-            onClick={(e) => {
-              e.preventDefault();
-              setView('submit');
-            }}
-          >
-            SUBMIT EVENT
-          </a>
-        </nav>
-      </footer>
     </div>
   );
 }
