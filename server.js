@@ -1,8 +1,5 @@
-// Add this at the very top of server.js
-console.log('Available environment variables:', {
-  VITE_EVENT_PASSWORD: process.env.VITE_EVENT_PASSWORD,
-  EVENT_PASSWORD: process.env.EVENT_PASSWORD
-});
+const EXPRESS_PASSWORD = 'CEELOVESYA!';
+
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
@@ -63,15 +60,22 @@ app.post('/api/events', (req, res) => {
   // Log the request headers
   console.log('Request headers:', req.headers);
 
+  // Log the entire request body
+  console.log('Received request body:', req.body);
+
   const { title, organization, date, startTime, endTime, location, category, imageUrl, password } = req.body;
+
+  // Log the password type and length
+  console.log('Password type:', typeof password);
+  console.log('Password length:', password?.length);
 
   // Password check logging and verification
   console.log('Server password check:', {
     provided: password,
-    expected: process.env.VITE_EVENT_PASSWORD
+    expected: EXPRESS_PASSWORD
   });
 
-  if (password !== process.env.VITE_EVENT_PASSWORD) {
+  if (password !== EXPRESS_PASSWORD) {
     console.log('Password verification failed');
     res.status(401).json({ error: 'Invalid password' });
     return;
