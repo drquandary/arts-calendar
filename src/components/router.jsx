@@ -1,13 +1,7 @@
 import * as React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import CalendarPage from "../pages/calendar";
+import CalendarPage from "../pages/CalendarPage.jsx";  // Updated import path
 
-/**
- * The router is imported in app.jsx
- *
- * Our site has just one route: Calendar
- * The Calendar component is defined in /pages
- */
 export default function PageRouter() {
   return (
     <Routes>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import EventCalendar from '../components/EventCalendar';
 import EventForm from '../components/EventForm';
-import '../styles/calendar-page.css';
+import '../styles/calendar.css';
 
 function CalendarPage() {
   const [view, setView] = useState('calendar');
@@ -18,7 +18,6 @@ function CalendarPage() {
 
   return (
     <div className="calendar-page">
-      {/* Debug info */}
       <div className="debug-info">
         Current view: {view}, Number of events: {events.length}
       </div>
