@@ -13,7 +13,6 @@ const EventCalendar = ({ events: propEvents }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Use prop events if provided, otherwise fetch
   useEffect(() => {
     if (propEvents) {
       setEvents(propEvents);
@@ -67,6 +66,28 @@ const EventCalendar = ({ events: propEvents }) => {
     return `${hour12}:${minutes} ${ampm}`;
   };
 
+  const groupEventsByDay = (events, weekStart) => {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const groupedEvents = {};
+    
+    for (let i = 0; i < 7; i++) {
+      const currentDate = new Date(weekStart);
+      currentDate.setDate(weekStart.getDate() + i);
+      groupedEvents[days[i]] = {
+        date: currentDate,
+        events: []
+      };
+    }
+
+    events.forEach(event => {
+      const eventDate = new Date(event.date + 'T00:00:00');
+      const dayName = days[eventDate.getDay()];
+      groupedEvents[dayName].events.push(event);
+    });
+
+    return groupedEvents;
+  };
+
   const getVisibleEvents = () => {
     return events.filter(event => {
       const eventDate = new Date(event.date + 'T00:00:00');
@@ -90,6 +111,115 @@ const EventCalendar = ({ events: propEvents }) => {
       }
       return dateCompare;
     });
+  };
+
+  const renderEventCard = (event) => (
+    <div className="event-card">
+      <div className="event-time" style={{ 
+        display: 'inline-block',
+        color: '#000',
+        fontSize: '1.5rem',
+        fontWeight: 'bold',
+        borderBottom: `1px solid ${styles.primaryColor}`,
+        marginBottom: '8px',
+        paddingBottom: '2px'
+      }}>
+        {formatTime(event.startTime)}
+        {event.endTime && ` - ${formatTime(event.endTime)}`}
+      </div>
+      <div className="event-main">
+        <h3 className="event-title" style={{
+          fontSize: '1.2rem',
+          margin: '8px 0',
+          fontWeight: 'normal'
+        }}>
+          {event.title}
+        </h3>
+        <p className="event-location" style={{
+          color: styles.primaryColor,
+          fontSize: '0.9rem',
+          fontWeight: 'bold',
+          textTransform: 'uppercase',
+          margin: '4px 0'
+        }}>
+          {event.location}
+        </p>
+        {event.imageUrl && (
+          <div className="event-image-container" style={{
+            marginTop: '10px',
+            maxWidth: '200px'
+          }}>
+            <img
+              src={event.imageUrl}
+              alt={event.title}
+              style={{
+                width: '100%',
+                height: 'auto',
+                borderRadius: '4px'
+              }}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.style.display = 'none';
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  const renderEvents = () => {
+    if (view === 'day') {
+      return getVisibleEvents().length > 0 ? (
+        getVisibleEvents().map((event, index) => (
+          <div key={event.id || index}>
+            {renderEventCard(event)}
+          </div>
+        ))
+      ) : (
+        <div className="no-events">No events scheduled for today</div>
+      );
+    } else {
+      const weekStart = new Date(currentDate);
+      weekStart.setDate(currentDate.getDate() - currentDate.getDay());
+      const groupedEvents = groupEventsByDay(getVisibleEvents(), weekStart);
+
+      return (
+        <div className="week-view">
+          {Object.entries(groupedEvents).map(([dayName, { date, events }]) => (
+            <div key={dayName} className="day-group">
+              <h2 className="day-header" style={{
+                color: styles.primaryColor,
+                fontSize: '1.2rem',
+                fontWeight: 'bold',
+                borderBottom: `2px solid ${styles.primaryColor}`,
+                padding: '10px 0',
+                marginBottom: '20px',
+                marginTop: '30px'
+              }}>
+                {dayName}
+              </h2>
+              {events.length > 0 ? (
+                events.map((event, index) => (
+                  <div key={event.id || index}>
+                    {renderEventCard(event)}
+                  </div>
+                ))
+              ) : (
+                <div className="no-events" style={{
+                  color: '#666',
+                  fontStyle: 'italic',
+                  marginBottom: '20px',
+                  paddingLeft: '10px'
+                }}>
+                  No events scheduled
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      );
+    }
   };
 
   if (isLoading) {
@@ -128,66 +258,7 @@ const EventCalendar = ({ events: propEvents }) => {
       </div>
 
       <div className="events-container">
-        {getVisibleEvents().length > 0 ? (
-          getVisibleEvents().map((event, index) => (
-            <div key={event.id || index} className="event-card">
-              <div className="event-time" style={{ 
-                display: 'inline-block',
-                color: '#000',
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-                borderBottom: `1px solid ${styles.primaryColor}`,
-                marginBottom: '8px',
-                paddingBottom: '2px'
-              }}>
-                {formatTime(event.startTime)}
-                {event.endTime && ` - ${formatTime(event.endTime)}`}
-              </div>
-              <div className="event-main">
-                <h3 className="event-title" style={{
-                  fontSize: '1.2rem',
-                  margin: '8px 0',
-                  fontWeight: 'normal'
-                }}>
-                  {event.title}
-                </h3>
-                <p className="event-location" style={{
-                  color: styles.primaryColor,
-                  fontSize: '0.9rem',
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase',
-                  margin: '4px 0'
-                }}>
-                  {event.location}
-                </p>
-                {event.imageUrl && (
-                  <div className="event-image-container" style={{
-                    marginTop: '10px',
-                    maxWidth: '200px'
-                  }}>
-                    <img
-                      src={event.imageUrl}
-                      alt={event.title}
-                      style={{
-                        width: '100%',
-                        height: 'auto',
-                        borderRadius: '4px'
-                      }}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.style.display = 'none';
-                      }}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="no-events">
-            No events scheduled for this {view}
-          </div>
-        )}
+        {renderEvents()}
       </div>
     </div>
   );

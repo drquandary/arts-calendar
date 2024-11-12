@@ -218,6 +218,19 @@ body {
   color: #ffffff;
   border-bottom: 2px solid #87CEEB;
 }
+.week-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.day-group {
+  padding: 10px 0;
+}
+
+.day-header {
+  margin-top: 10px;
+}
 
 /* Empty State */
 .no-events {
