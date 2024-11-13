@@ -114,176 +114,113 @@ const EventCalendar = ({ events: propEvents }) => {
     });
   };
 
-  const renderEventCard = (event) => (
-    <div className="event-card" style={{
-      width: '300px',
-      margin: '10px',
-      padding: '15px',
-      backgroundColor: 'white',
-      borderRadius: '8px',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-      display: 'flex',
-      flexDirection: 'column'
+ const renderEventCard = (event) => (
+  <div className="event-card">
+    <div style={{ 
+      display: 'flex', 
+      justifyContent: 'space-between', 
+      alignItems: 'flex-start',
+      marginBottom: '8px'
     }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'flex-start',
-        marginBottom: '8px'
-      }}>
-        <div className="event-time" style={{ 
-          color: '#000',
-          fontSize: '1.1rem',
-          fontWeight: 'bold',
-          borderBottom: `1px solid ${styles.primaryColor}`,
-          paddingBottom: '2px'
-        }}>
-          {formatTime(event.startTime)}
-          {event.endTime && ` - ${formatTime(event.endTime)}`}
-        </div>
-        <DeleteEventButton 
-          eventId={event.id} 
-          onDeleteSuccess={fetchEvents} 
-        />
+      <div className="event-time">
+        {formatTime(event.startTime)}
+        {event.endTime && ` - ${formatTime(event.endTime)}`}
       </div>
-      <div className="event-main">
-        <h3 className="event-title" style={{
-          fontSize: '1.1rem',
-          margin: '8px 0',
-          fontWeight: 'normal',
-          lineHeight: '1.4',
-          overflow: 'hidden',
-          display: '-webkit-box',
-          WebkitLineClamp: '2',
-          WebkitBoxOrient: 'vertical'
-        }}>
-          {event.title}
-        </h3>
-        <p className="event-location" style={{
-          color: styles.primaryColor,
-          fontSize: '0.9rem',
-          fontWeight: 'bold',
-          textTransform: 'uppercase',
-          margin: '4px 0'
-        }}>
-          {event.location}
-        </p>
-        <p className="event-category" style={{
-          color: '#666',
-          fontSize: '0.8rem',
-          fontWeight: 'bold',
-          textTransform: 'uppercase',
-          margin: '4px 0'
-        }}>
-          {event.category}
-        </p>
-        {event.imageUrl && (
-          <div className="event-image-container" style={{
-            marginTop: '10px',
-            width: '100%',
-            maxHeight: '150px',
-            overflow: 'hidden'
-          }}>
-            <img
-              src={event.imageUrl}
-              alt={event.title}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                borderRadius: '4px'
-              }}
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.style.display = 'none';
-              }}
-            />
-          </div>
-        )}
-        {event.infoUrl && (
-          <a 
-            href={event.infoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'block',
-              marginTop: '10px',
-              color: '#666',
-              fontSize: '0.8rem',
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              textDecoration: 'none'
-            }}
-          >
-            Learn More
-          </a>
-        )}
-      </div>
+      <DeleteEventButton 
+        eventId={event.id} 
+        onDeleteSuccess={fetchEvents} 
+      />
     </div>
-  );
+    <div className="event-main">
+      <h3 className="event-title">
+        {event.title}
+      </h3>
+      <p className="event-location">
+        {event.location}
+      </p>
+      <p className="event-category">
+        {event.category}
+      </p>
+      {event.imageUrl && (
+        <div className="event-image-container">
+          <img
+            src={event.imageUrl}
+            alt={event.title}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.style.display = 'none';
+            }}
+          />
+        </div>
+      )}
+      {event.infoUrl && (
+        <a 
+          href={event.infoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="learn-more-link"
+        >
+          Learn More
+        </a>
+      )}
+    </div>
+  </div>
+);
 
   const renderDayEvents = (events) => (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-      gap: '20px',
-      maxWidth: '100%',
-      margin: '0 auto'
-    }}>
-      {events.map((event, index) => (
-        <div key={event.id || index}>
-          {renderEventCard(event)}
-        </div>
-      ))}
-    </div>
-  );
+  <div className="events-grid">
+    {events.map((event, index) => (
+      <div key={event.id || index}>
+        {renderEventCard(event)}
+      </div>
+    ))}
+  </div>
+);
 
-  const renderEvents = () => {
-    if (view === 'day') {
-      return getVisibleEvents().length > 0 ? (
-        renderDayEvents(getVisibleEvents())
-      ) : (
-        <div className="no-events">No events scheduled for today</div>
-      );
-    } else {
-      const weekStart = new Date(currentDate);
-      weekStart.setDate(currentDate.getDate() - currentDate.getDay());
-      const groupedEvents = groupEventsByDay(getVisibleEvents(), weekStart);
+const renderEvents = () => {
+  if (view === 'day') {
+    return getVisibleEvents().length > 0 ? (
+      <div className="events-grid">
+        {getVisibleEvents().map((event, index) => (
+          <div key={event.id || index}>
+            {renderEventCard(event)}
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div className="no-events">No events scheduled for today</div>
+    );
+  } else {
+    const weekStart = new Date(currentDate);
+    weekStart.setDate(currentDate.getDate() - currentDate.getDay());
+    const groupedEvents = groupEventsByDay(getVisibleEvents(), weekStart);
 
-      return (
-        <div className="week-view">
-          {Object.entries(groupedEvents).map(([dayName, { date, events }]) => (
-            <div key={dayName} className="day-group">
-              <h2 className="day-header" style={{
-                color: styles.primaryColor,
-                fontSize: '1.2rem',
-                fontWeight: 'bold',
-                borderBottom: `2px solid ${styles.primaryColor}`,
-                padding: '10px 0',
-                marginBottom: '20px',
-                marginTop: '30px'
-              }}>
-                {dayName}
-              </h2>
-              {events.length > 0 ? (
-                renderDayEvents(events)
-              ) : (
-                <div className="no-events" style={{
-                  color: '#666',
-                  fontStyle: 'italic',
-                  marginBottom: '20px',
-                  paddingLeft: '10px'
-                }}>
-                  No events scheduled
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      );
-    }
-  };
-
+    return (
+      <div className="week-view">
+        {Object.entries(groupedEvents).map(([dayName, { date, events }]) => (
+          <div key={dayName} className="day-group">
+            <h2 className="day-header">
+              {dayName}
+            </h2>
+            {events.length > 0 ? (
+              <div className="events-grid">
+                {events.map((event, index) => (
+                  <div key={event.id || index}>
+                    {renderEventCard(event)}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="no-events">
+                No events scheduled
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  }
+};
   if (isLoading) {
     return <div className="loading">Loading events...</div>;
   }

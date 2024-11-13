@@ -91,10 +91,11 @@ body {
   background: transparent;
   border-bottom: 2px solid #1C05B3;
 }
+
 .loading {
   text-align: center;
   padding: 2rem;
-  color: #66666;
+  color: #666666;
 }
 
 .error {
@@ -105,76 +106,122 @@ body {
   border-radius: 4px;
 }
 
-/* Events Display */
-.events-container {
-  width: 100%;
-  margin: 0;
-  padding: 0 20px;
+/* Events Grid Layout - Updated with !important */
+.events-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+  gap: 20px !important;
+  width: 100% !important;
+  padding: 20px !important;
+  margin: 0 !important;
 }
 
+/* Events Container - Updated with !important */
+.events-container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 20px !important;
+}
+
+/* Event Card - Updated with !important */
 .event-card {
-  padding: 20px;
-  margin-bottom: 20px;
-  background: transparent;
-  border: none;
+  width: 100% !important;
+  max-width: 400px !important;
+  margin: 0 !important;
+  padding: 15px !important;
+  background-color: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .event-time {
-  min-width: 120px;
-  font-weight: 500;
-  color: #666666;
+  color: #000 !important;
+  font-size: 1.1rem !important;
+  font-weight: bold !important;
+  border-bottom: 1px solid #4400ff !important;
+  padding-bottom: 2px !important;
+  min-width: 120px !important;
 }
 
 .event-main {
-  flex: 1;
+  flex: 1 !important;
 }
 
 .event-title {
-  margin: 0 0 5px 0;
-  font-size: 1.1rem;
-  color: #666666;
-}
-
-.event-org {
-  color: #666666;
-  margin: 0 0 5px 0;
+  font-size: 1.1rem !important;
+  margin: 8px 0 !important;
+  font-weight: normal !important;
+  line-height: 1.4 !important;
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  color: #333 !important;
 }
 
 .event-location {
-  color: #444444;
-  margin: 0 0 10px 0;
+  color: #4400ff !important;
+  font-size: 0.9rem !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  margin: 4px 0 !important;
+}
+
+.event-category {
+  color: #666 !important;
+  font-size: 0.8rem !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  margin: 4px 0 !important;
 }
 
 /* Event Images */
 .event-image-container {
-  margin: 10px 0;
-  max-width: 200px;
+  margin-top: 10px !important;
+  width: 100% !important;
+  max-height: 150px !important;
+  overflow: hidden !important;
 }
 
-.event-image, 
-.event-thumbnail {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-  margin: 10px 0;
-  max-width: 200px;
+.event-image-container img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 4px !important;
 }
 
-/* Categories */
-.event-category, 
-.category {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  text-transform: capitalize;
-  background: #fbfff1;
+/* Week View - Updated with !important */
+.week-view {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+  width: 100% !important;
 }
 
-.category {
-  color: #ff5f1f;
-  background: #e3f2fd;
-  margin-top: 10px;
+.day-group {
+  padding: 10px 0 !important;
+  width: 100% !important;
+}
+
+.day-header {
+  color: #4400ff !important;
+  font-size: 1.2rem !important;
+  font-weight: bold !important;
+  border-bottom: 2px solid #4400ff !important;
+  padding: 10px 0 !important;
+  margin-bottom: 20px !important;
+  margin-top: 30px !important;
+}
+
+/* Empty State */
+.no-events {
+  text-align: center;
+  padding: 40px;
+  color: #666666;
+  font-style: italic;
 }
 
 /* Footer Navigation */
@@ -218,27 +265,6 @@ body {
   color: #ffffff;
   border-bottom: 2px solid #87CEEB;
 }
-.week-view {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.day-group {
-  padding: 10px 0;
-}
-
-.day-header {
-  margin-top: 10px;
-}
-
-/* Empty State */
-.no-events {
-  text-align: center;
-  padding: 40px;
-  color: #666666;
-  font-style: italic;
-}
 
 /* Media Queries */
 @media (max-width: 600px) {
@@ -248,10 +274,14 @@ body {
   }
   
   .event-card {
-    flex-direction: column;
+    flex-direction: column !important;
   }
   
   .event-time {
-    min-width: auto;
+    min-width: auto !important;
+  }
+  
+  .events-grid {
+    grid-template-columns: 1fr !important;
   }
 }
