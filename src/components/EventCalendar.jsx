@@ -115,65 +115,92 @@ const EventCalendar = ({ events: propEvents }) => {
   };
 
   const renderEventCard = (event) => (
-  <div className="event-card">
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-      <div className="event-time" style={{ 
-        display: 'inline-block',
-        color: '#000',
-        fontSize: '1.5rem',
-        fontWeight: 'bold',
-        borderBottom: `1px solid ${styles.primaryColor}`,
-        marginBottom: '8px',
-        paddingBottom: '2px'
-      }}>
-        {formatTime(event.startTime)}
-        {event.endTime && ` - ${formatTime(event.endTime)}`}
-      </div>
-      <DeleteEventButton 
-        eventId={event.id} 
-        onDeleteSuccess={fetchEvents} 
-      />
-    </div>
-    <div className="event-main">
-      <h3 className="event-title" style={{
-        fontSize: '1.2rem',
-        margin: '8px 0',
-        fontWeight: 'normal'
-      }}>
-        {event.title}
-      </h3>
-      <p className="event-location" style={{
-        color: styles.primaryColor,
-        fontSize: '0.9rem',
-        fontWeight: 'bold',
-        textTransform: 'uppercase',
-        margin: '4px 0'
-      }}>
-        {event.location}
-      </p>
-      {event.imageUrl && (
-        <div className="event-image-container" style={{
-          marginTop: '10px',
-          maxWidth: '200px'
+    <div className="event-card">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div className="event-time" style={{ 
+          display: 'inline-block',
+          color: '#000',
+          fontSize: '1.5rem',
+          fontWeight: 'bold',
+          borderBottom: `1px solid ${styles.primaryColor}`,
+          marginBottom: '8px',
+          paddingBottom: '2px'
         }}>
-          <img
-            src={event.imageUrl}
-            alt={event.title}
-            style={{
-              width: '100%',
-              height: 'auto',
-              borderRadius: '4px'
-            }}
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.style.display = 'none';
-            }}
-          />
+          {formatTime(event.startTime)}
+          {event.endTime && ` - ${formatTime(event.endTime)}`}
         </div>
-      )}
+        <DeleteEventButton 
+          eventId={event.id} 
+          onDeleteSuccess={fetchEvents} 
+        />
+      </div>
+      <div className="event-main">
+        <h3 className="event-title" style={{
+          fontSize: '1.2rem',
+          margin: '8px 0',
+          fontWeight: 'normal'
+        }}>
+          {event.title}
+        </h3>
+        <p className="event-location" style={{
+          color: styles.primaryColor,
+          fontSize: '0.9rem',
+          fontWeight: 'bold',
+          textTransform: 'uppercase',
+          margin: '4px 0'
+        }}>
+          {event.location}
+        </p>
+        <p className="event-category" style={{
+          color: '#666',
+          fontSize: '0.8rem',
+          fontWeight: 'bold',
+          textTransform: 'uppercase',
+          margin: '4px 0'
+        }}>
+          {event.category}
+        </p>
+        {event.imageUrl && (
+          <div className="event-image-container" style={{
+            marginTop: '10px',
+            maxWidth: '200px'
+          }}>
+            <img
+              src={event.imageUrl}
+              alt={event.title}
+              style={{
+                width: '100%',
+                height: 'auto',
+                borderRadius: '4px'
+              }}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.style.display = 'none';
+              }}
+            />
+          </div>
+        )}
+        {event.infoUrl && (
+          <a 
+            href={event.infoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'block',
+              marginTop: '10px',
+              color: '#666',
+              fontSize: '0.8rem',
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              textDecoration: 'none'
+            }}
+          >
+            Learn More
+          </a>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 
   const renderEvents = () => {
     if (view === 'day') {

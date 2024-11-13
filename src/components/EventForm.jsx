@@ -12,8 +12,10 @@ export default function EventForm({ onSubmit }) {
     location: "",
     category: "",
     imageUrl: "",
+    infoUrl: "",
     password: "",
   });
+
 
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -222,6 +224,17 @@ export default function EventForm({ onSubmit }) {
             />
           </div>
         )}
+      </div>
+      <div className="form-group">
+        <label htmlFor="infoUrl">More Information URL</label>
+        <input
+          type="url"
+          id="infoUrl"
+          name="infoUrl"
+          value={formData.infoUrl}
+          onChange={handleChange}
+          placeholder="https://example.com/event-details"
+        />
       </div>
 
       <div className="form-group">

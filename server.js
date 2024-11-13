@@ -37,6 +37,7 @@ db.serialize(() => {
       location TEXT NOT NULL,
       category TEXT NOT NULL,
       imageUrl TEXT,
+      infoUrl TEXT,
       password TEXT NOT NULL,
       createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
     )
@@ -44,10 +45,9 @@ db.serialize(() => {
     if (err) {
       console.error('Error creating table:', err);
     } else {
-      console.log('Events table created with password field');
+      console.log('Events table created with new fields');
     }
   });
-});
 
 // Rest of your code stays exactly the same below this point
 app.get('/api/events', (req, res) => {
@@ -64,30 +64,25 @@ app.get('/api/events', (req, res) => {
 });
 
 app.post('/api/events', (req, res) => {
-  // Log the entire request object
   console.log('Received request:', req);
-  // Log the request headers
   console.log('Request headers:', req.headers);
-  // Log the entire request body
   console.log('Received request body:', req.body);
   
-  const { title, organization, date, startTime, endTime, location, category, imageUrl, password } = req.body;
+  const { title, organization, date, startTime, endTime, location, category, imageUrl, infoUrl, password } = req.body;
   
-  // Log password specifically
   console.log('Password received:', password);
 
-  // Check if password is correct
   if (password !== 'ceelovesya') {
-    console.log('Password incorrect:', password); // Additional logging
+    console.log('Password incorrect:', password);
     return res.status(401).json({ error: 'Incorrect password' });
   }
 
   const sql = `
-    INSERT INTO events (title, organization, date, startTime, endTime, location, category, imageUrl, password)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO events (title, organization, date, startTime, endTime, location, category, imageUrl, infoUrl, password)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
-  db.run(sql, [title, organization, date, startTime, endTime, location, category, imageUrl, password],
+  db.run(sql, [title, organization, date, startTime, endTime, location, category, imageUrl, infoUrl, password],
     function(err) {
       if (err) {
         console.error('Database insert error:', err);
@@ -102,6 +97,7 @@ app.post('/api/events', (req, res) => {
     }
   );
 });
+
 
 app.delete('/api/events/:id', (req, res) => {
   const eventId = req.params.id;
