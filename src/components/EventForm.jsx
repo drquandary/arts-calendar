@@ -11,17 +11,17 @@ export default function EventForm({ onSubmit }) {
     endTime: "",
     location: "",
     category: "",
-    imageUrl: "",  // Now just a URL string
+    imageUrl: "",
+    password: "",  // Added password field
   });
 
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear any previous errors
+    setError(""); 
 
     try {
-      // Create a date object in Eastern Time
       const dateStr = formData.date;
       const dateInET = new Date(dateStr + 'T00:00:00-05:00');
 
@@ -38,6 +38,7 @@ export default function EventForm({ onSubmit }) {
         location: "",
         category: "",
         imageUrl: "",
+        password: "",
       });
 
       alert("Event submitted!");
@@ -166,45 +167,65 @@ export default function EventForm({ onSubmit }) {
         </select>
       </div>
 
-     <div className="form-group">
-          <label htmlFor="imageUrl">Event Image URL</label>
-          <input
-            type="url"
-            id="imageUrl"
-            name="imageUrl"
-            value={formData.imageUrl}
-            onChange={handleChange}
-            placeholder="https://example.com/your-image.jpg"
-          />
-          <p className="help-text" style={{
-            fontSize: '0.85rem',
-            color: '#666',
-            marginTop: '4px'
-          }}>
-            Need to convert an image file to URL? Use a free service like{' '}
-            <a 
-              href="https://postimages.org/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style={{ color: '#1C05B3' }}
-            >
-              postimages.org
-            </a>
-          </p>
-          {formData.imageUrl && (
-            <div className="image-preview-container">
-              <img 
-                src={formData.imageUrl} 
-                alt="Preview" 
-                className="image-preview"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.style.display = 'none';
-                }}
-              />
-            </div>
-          )}
-        </div>
+      <div className="form-group">
+        <label htmlFor="imageUrl">Event Image URL</label>
+        <input
+          type="url"
+          id="imageUrl"
+          name="imageUrl"
+          value={formData.imageUrl}
+          onChange={handleChange}
+          placeholder="https://example.com/your-image.jpg"
+        />
+        <p className="help-text" style={{
+          fontSize: '0.85rem',
+          color: '#666',
+          marginTop: '4px'
+        }}>
+          Need to convert an image file to URL? Use a free service like{' '}
+          <a 
+            href="https://postimages.org/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ color: '#1C05B3' }}
+          >
+            postimages.org
+          </a>
+        </p>
+        {formData.imageUrl && (
+          <div className="image-preview-container">
+            <img 
+              src={formData.imageUrl} 
+              alt="Preview" 
+              className="image-preview"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.style.display = 'none';
+              }}
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="password">Event Password*</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+          placeholder="Enter a password to protect your event"
+        />
+        <p className="help-text" style={{
+          fontSize: '0.85rem',
+          color: '#666',
+          marginTop: '4px'
+        }}>
+          Remember this password - you'll need it to edit your event later
+        </p>
+      </div>
 
       <button type="submit" className="submit-button">
         Submit Event

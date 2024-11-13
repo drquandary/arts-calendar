@@ -26,6 +26,7 @@ db.serialize(() => {
       location TEXT NOT NULL,
       category TEXT NOT NULL,
       imageUrl TEXT,
+      password TEXT NOT NULL,
       createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `, (err) => {
@@ -54,22 +55,17 @@ app.get('/api/events', (req, res) => {
 app.post('/api/events', (req, res) => {
   // Log the entire request object
   console.log('Received request:', req);
-
   // Log the request headers
   console.log('Request headers:', req.headers);
-
   // Log the entire request body
   console.log('Received request body:', req.body);
+  const { title, organization, date, startTime, endTime, location, category, imageUrl, password } = req.body;
 
-  const { title, organization, date, startTime, endTime, location, category, imageUrl } = req.body;
-
-  // If password is correct, proceed with database insertion
   const sql = `
-    INSERT INTO events (title, organization, date, startTime, endTime, location, category, imageUrl)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO events (title, organization, date, startTime, endTime, location, category, imageUrl, password)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
-
-  db.run(sql, [title, organization, date, startTime, endTime, location, category, imageUrl],
+  db.run(sql, [title, organization, date, startTime, endTime, location, category, imageUrl, password],
     function(err) {
       if (err) {
         console.error('Database insert error:', err);
