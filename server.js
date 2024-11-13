@@ -60,7 +60,9 @@ app.post('/api/events', (req, res) => {
   // Log the entire request body
   console.log('Received request body:', req.body);
   const { title, organization, date, startTime, endTime, location, category, imageUrl, password } = req.body;
-
+  if (password !== 'ceelovesya') {
+  return res.status(401).json({ error: 'Incorrect password' });
+}
   const sql = `
     INSERT INTO events (title, organization, date, startTime, endTime, location, category, imageUrl, password)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)

@@ -31,7 +31,7 @@ function CalendarPage() {
     }
   };
 
-  const handleAddEvent = async (newEvent) => {
+ const handleAddEvent = async (newEvent) => {
     try {
       console.log('Submitting new event:', newEvent);
       const response = await fetch('/api/events', {
@@ -42,29 +42,27 @@ function CalendarPage() {
         body: JSON.stringify(newEvent)
       });
       
+      const data = await response.json();
+      
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to add event');
+        throw new Error(data.error || 'Failed to add event');
       }
-
+      
       console.log('Event submitted successfully');
       // Fetch updated events list
       await fetchEvents();
       setView('calendar');
     } catch (err) {
       console.error('Error adding event:', err);
-      alert('Failed to add event: ' + err.message);
+      throw err; // This will be caught by the EventForm's error handling
     }
   };
-
   if (isLoading) {
     return <div className="loading">Loading events...</div>;
   }
-
   if (error) {
     return <div className="error">Error: {error}</div>;
   }
-
   return (
     <div className="calendar-page">
       <div className="debug-info">

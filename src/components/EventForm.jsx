@@ -12,23 +12,27 @@ export default function EventForm({ onSubmit }) {
     location: "",
     category: "",
     imageUrl: "",
-    password: "",  // Added password field
+    password: "",
   });
 
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(""); 
+    setIsSubmitting(true);
 
     try {
       const dateStr = formData.date;
       const dateInET = new Date(dateStr + 'T00:00:00-05:00');
 
       console.log("Submitting form data:", formData);
-      onSubmit(formData);
-
-      // Reset form
+      
+      // Call onSubmit and wait for the response
+      const response = await onSubmit(formData);
+      
+      // If submission was successful, reset the form
       setFormData({
         title: "",
         organization: "",
@@ -41,10 +45,16 @@ export default function EventForm({ onSubmit }) {
         password: "",
       });
 
-      alert("Event submitted!");
+      alert("Event submitted successfully!");
     } catch (error) {
       console.error("Error in form submission:", error);
-      alert("Error submitting event. Check console for details.");
+      if (error.message === 'Incorrect password') {
+        setError("Incorrect password. Please try again.");
+      } else {
+        setError("Error submitting event. Please try again.");
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -54,7 +64,13 @@ export default function EventForm({ onSubmit }) {
       ...prev,
       [name]: value
     }));
+    // Clear error when user starts typing in password field
+    if (name === 'password') {
+      setError('');
+    }
   };
+
+  // Rest of your form component remains the same until the error message display...
 
   return (
     <form onSubmit={handleSubmit} className="event-form">
@@ -73,6 +89,7 @@ export default function EventForm({ onSubmit }) {
         </div>
       )}
 
+      {/* All your existing form fields remain the same */}
       <div className="form-group">
         <label htmlFor="title">Event Title*</label>
         <input
@@ -216,19 +233,16 @@ export default function EventForm({ onSubmit }) {
           value={formData.password}
           onChange={handleChange}
           required
-          placeholder="Enter a password to protect your event"
+          placeholder="Enter the event submission password"
         />
-        <p className="help-text" style={{
-          fontSize: '0.85rem',
-          color: '#666',
-          marginTop: '4px'
-        }}>
-          Remember this password - you'll need it to edit your event later
-        </p>
       </div>
 
-      <button type="submit" className="submit-button">
-        Submit Event
+      <button 
+        type="submit" 
+        className="submit-button"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? 'Submitting...' : 'Submit Event'}
       </button>
     </form>
   );
