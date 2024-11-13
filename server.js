@@ -48,8 +48,8 @@ db.serialize(() => {
       console.log('Events table created with new fields');
     }
   });
+}); // Added this missing closing brace
 
-// Rest of your code stays exactly the same below this point
 app.get('/api/events', (req, res) => {
   console.log('GET /api/events called');
   db.all('SELECT * FROM events ORDER BY date, startTime', [], (err, rows) => {
@@ -97,7 +97,6 @@ app.post('/api/events', (req, res) => {
     }
   );
 });
-
 
 app.delete('/api/events/:id', (req, res) => {
   const eventId = req.params.id;
