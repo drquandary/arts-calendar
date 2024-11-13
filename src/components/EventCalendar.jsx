@@ -115,15 +115,27 @@ const EventCalendar = ({ events: propEvents }) => {
   };
 
   const renderEventCard = (event) => (
-    <div className="event-card">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+    <div className="event-card" style={{
+      width: '300px',
+      margin: '10px',
+      padding: '15px',
+      backgroundColor: 'white',
+      borderRadius: '8px',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'flex-start',
+        marginBottom: '8px'
+      }}>
         <div className="event-time" style={{ 
-          display: 'inline-block',
           color: '#000',
-          fontSize: '1.5rem',
+          fontSize: '1.1rem',
           fontWeight: 'bold',
           borderBottom: `1px solid ${styles.primaryColor}`,
-          marginBottom: '8px',
           paddingBottom: '2px'
         }}>
           {formatTime(event.startTime)}
@@ -136,9 +148,14 @@ const EventCalendar = ({ events: propEvents }) => {
       </div>
       <div className="event-main">
         <h3 className="event-title" style={{
-          fontSize: '1.2rem',
+          fontSize: '1.1rem',
           margin: '8px 0',
-          fontWeight: 'normal'
+          fontWeight: 'normal',
+          lineHeight: '1.4',
+          overflow: 'hidden',
+          display: '-webkit-box',
+          WebkitLineClamp: '2',
+          WebkitBoxOrient: 'vertical'
         }}>
           {event.title}
         </h3>
@@ -163,14 +180,17 @@ const EventCalendar = ({ events: propEvents }) => {
         {event.imageUrl && (
           <div className="event-image-container" style={{
             marginTop: '10px',
-            maxWidth: '200px'
+            width: '100%',
+            maxHeight: '150px',
+            overflow: 'hidden'
           }}>
             <img
               src={event.imageUrl}
               alt={event.title}
               style={{
                 width: '100%',
-                height: 'auto',
+                height: '100%',
+                objectFit: 'cover',
                 borderRadius: '4px'
               }}
               onError={(e) => {
@@ -202,14 +222,26 @@ const EventCalendar = ({ events: propEvents }) => {
     </div>
   );
 
+  const renderDayEvents = (events) => (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+      gap: '20px',
+      maxWidth: '100%',
+      margin: '0 auto'
+    }}>
+      {events.map((event, index) => (
+        <div key={event.id || index}>
+          {renderEventCard(event)}
+        </div>
+      ))}
+    </div>
+  );
+
   const renderEvents = () => {
     if (view === 'day') {
       return getVisibleEvents().length > 0 ? (
-        getVisibleEvents().map((event, index) => (
-          <div key={event.id || index}>
-            {renderEventCard(event)}
-          </div>
-        ))
+        renderDayEvents(getVisibleEvents())
       ) : (
         <div className="no-events">No events scheduled for today</div>
       );
@@ -234,11 +266,7 @@ const EventCalendar = ({ events: propEvents }) => {
                 {dayName}
               </h2>
               {events.length > 0 ? (
-                events.map((event, index) => (
-                  <div key={event.id || index}>
-                    {renderEventCard(event)}
-                  </div>
-                ))
+                renderDayEvents(events)
               ) : (
                 <div className="no-events" style={{
                   color: '#666',

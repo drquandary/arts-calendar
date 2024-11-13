@@ -14,41 +14,31 @@ const db = new sqlite3.Database('.data/sqlite.db', (err) => {
   }
 });
 
-// Drop the existing table and recreate it
+// Only create the table if it doesn't exist
 db.serialize(() => {
-  // First drop the table if it exists
-  db.run(`DROP TABLE IF EXISTS events`, (err) => {
-    if (err) {
-      console.error('Error dropping table:', err);
-    } else {
-      console.log('Dropped existing events table');
-    }
-  });
-
-  // Then create the new table with the password field
-  db.run(`
-    CREATE TABLE events (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT NOT NULL,
-      organization TEXT NOT NULL,
-      date TEXT NOT NULL,
-      startTime TEXT NOT NULL,
-      endTime TEXT NOT NULL,
-      location TEXT NOT NULL,
-      category TEXT NOT NULL,
-      imageUrl TEXT,
-      infoUrl TEXT,
-      password TEXT NOT NULL,
-      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-  `, (err) => {
+  db.run(`CREATE TABLE IF NOT EXISTS events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    organization TEXT NOT NULL,
+    date TEXT NOT NULL,
+    startTime TEXT NOT NULL,
+    endTime TEXT NOT NULL,
+    location TEXT NOT NULL,
+    category TEXT NOT NULL,
+    imageUrl TEXT,
+    infoUrl TEXT,
+    password TEXT NOT NULL,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`, (err) => {
     if (err) {
       console.error('Error creating table:', err);
     } else {
-      console.log('Events table created with new fields');
+      console.log('Confirmed events table exists');
     }
   });
-}); // Added this missing closing brace
+});
+
+// Rest of your server code stays exactly the same...
 
 app.get('/api/events', (req, res) => {
   console.log('GET /api/events called');
