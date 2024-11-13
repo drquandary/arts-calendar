@@ -2,6 +2,7 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const app = express();
+
 app.use(express.json());
 
 // Create/connect to SQLite database with better error handling
@@ -59,14 +60,19 @@ app.post('/api/events', (req, res) => {
   console.log('Request headers:', req.headers);
   // Log the entire request body
   console.log('Received request body:', req.body);
+  
   const { title, organization, date, startTime, endTime, location, category, imageUrl, password } = req.body;
+
+  // Check if password is correct
   if (password !== 'ceelovesya') {
-  return res.status(401).json({ error: 'Incorrect password' });
-}
+    return res.status(401).json({ error: 'Incorrect password' });
+  }
+
   const sql = `
     INSERT INTO events (title, organization, date, startTime, endTime, location, category, imageUrl, password)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
+
   db.run(sql, [title, organization, date, startTime, endTime, location, category, imageUrl, password],
     function(err) {
       if (err) {
@@ -81,6 +87,24 @@ app.post('/api/events', (req, res) => {
       });
     }
   );
+});
+
+// Delete event endpoint
+app.delete('/api/events/:id', (req, res) => {
+  const eventId = req.params.id;
+  const { password } = req.body;
+
+  if (password !== 'ceelovesya') {
+    return res.status(401).json({ error: 'Incorrect password' });
+  }
+
+  db.run('DELETE FROM events WHERE id = ?', [eventId], (err) => {
+    if (err) {
+      console.error('Error deleting event:', err);
+      return res.status(500).json({ error: 'Failed to delete event' });
+    }
+    res.json({ message: 'Event deleted successfully' });
+  });
 });
 
 // Serve static files in production
