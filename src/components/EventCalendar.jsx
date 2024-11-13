@@ -119,8 +119,7 @@ const EventCalendar = ({ events: propEvents }) => {
     <div style={{ 
       display: 'flex', 
       justifyContent: 'space-between', 
-      alignItems: 'flex-start',
-      marginBottom: '8px'
+      alignItems: 'flex-start'
     }}>
       <div className="event-time">
         {formatTime(event.startTime)}
@@ -164,16 +163,6 @@ const EventCalendar = ({ events: propEvents }) => {
         </a>
       )}
     </div>
-  </div>
-);
-
-  const renderDayEvents = (events) => (
-  <div className="events-grid">
-    {events.map((event, index) => (
-      <div key={event.id || index}>
-        {renderEventCard(event)}
-      </div>
-    ))}
   </div>
 );
 
