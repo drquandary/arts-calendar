@@ -44,6 +44,7 @@ export default function EventForm({ onSubmit }) {
         location: "",
         category: "",
         imageUrl: "",
+        infoUrl: "",
         password: "",
       });
 
@@ -197,20 +198,54 @@ export default function EventForm({ onSubmit }) {
           placeholder="https://example.com/your-image.jpg"
         />
         <p className="help-text" style={{
-          fontSize: '0.85rem',
-          color: '#666',
-          marginTop: '4px'
-        }}>
-          Need to convert an image file to URL? Use a free service like{' '}
-          <a 
-            href="https://postimages.org/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            style={{ color: '#1C05B3' }}
-          >
-            postimages.org
-          </a>
-        </p>
+  fontSize: '0.85rem',
+  color: '#666',
+  marginTop: '4px'
+}}>
+  Need to add an image? Upload to{' '}
+  <a 
+    href="https://postimages.org/" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    style={{ color: '#1C05B3' }}
+  >
+    postimages.org
+  </a>{' '}
+  and use the{' '}
+  
+    href="https://i.postimg.cc/mgwqjcXh/temp-Image21-Fwv-Z.avif"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{ color: '#1C05B3' }}
+  >
+    "Direct link"
+  </a>{' '}
+  option.
+</p><p className="help-text" style={{
+  fontSize: '0.85rem',
+  color: '#666',
+  marginTop: '4px'
+}}>
+  Need to add an image? Upload to{' '}
+  <a 
+    href="https://postimages.org/" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    style={{ color: '#1C05B3' }}
+  >
+    postimages.org
+  </a>{' '}
+  and use the {' '}
+  
+    href="https://i.postimg.cc/mgwqjcXh/temp-Image21-Fwv-Z.avif"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{ color: '#1C05B3' }}
+  >
+    "Direct link"
+  </a>{' '}
+  option.
+</p>
         {formData.imageUrl && (
           <div className="image-preview-container">
             <img 
@@ -224,6 +259,7 @@ export default function EventForm({ onSubmit }) {
             />
           </div>
         )}
+        
       </div>
       <div className="form-group">
         <label htmlFor="infoUrl">More Information URL</label>
