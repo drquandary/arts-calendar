@@ -219,7 +219,7 @@ export default function EventForm({ onSubmit }) {
         
       </div>
       <div className="form-group">
-        <label htmlFor="infoUrl">Event Web</label>
+        <label htmlFor="infoUrl">Event Website</label>
         <input
           type="url"
           id="infoUrl"
