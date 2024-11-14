@@ -201,8 +201,7 @@ export default function EventForm({ onSubmit }) {
   Need to add an image? Copy the "DIRECT LINK" URL after uploading your image to {' '}
   <a href="https://postimages.org/" target="_blank" rel="noopener noreferrer" style={{color:'#1C05B3'}}>
     postimages.org
-  </a>{' '}
-  and 
+  </a>{' '} 
 </p>
         {formData.imageUrl && (
           <div className="image-preview-container">
@@ -220,7 +219,7 @@ export default function EventForm({ onSubmit }) {
         
       </div>
       <div className="form-group">
-        <label htmlFor="infoUrl">More Information URL</label>
+        <label htmlFor="infoUrl">Event Web</label>
         <input
           type="url"
           id="infoUrl"
