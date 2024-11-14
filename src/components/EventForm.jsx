@@ -212,8 +212,8 @@ export default function EventForm({ onSubmit }) {
     postimages.org
   </a>{' '}
   and use the{' '}
-  
-    <a href="https://i.postimg.cc/mgwqjcXh/temp-Image21-Fwv-Z.avif"
+  <a 
+    href="https://i.postimg.cc/mgwqjcXh/temp-Image21-Fwv-Z.avif"
     target="_blank"
     rel="noopener noreferrer"
     style={{ color: '#1C05B3' }}
