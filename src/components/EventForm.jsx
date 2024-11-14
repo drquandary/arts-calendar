@@ -197,30 +197,12 @@ export default function EventForm({ onSubmit }) {
           onChange={handleChange}
           placeholder="https://example.com/your-image.jpg"
         />
-        <p className="help-text" style={{
-  fontSize: '0.85rem',
-  color: '#666',
-  marginTop: '4px'
-}}>
-  Need to add an image? Upload to{' '}
-  <a 
-    href="https://postimages.org/" 
-    target="_blank" 
-    rel="noopener noreferrer"
-    style={{ color: '#1C05B3' }}
-  >
+        <p className="help-text" style={{fontSize:'0.85rem',color:'#666',marginTop:'4px'}}>
+  Need to add an image? Copy the "DIRECT LINK" URL after uploading your image to {' '}
+  <a href="https://postimages.org/" target="_blank" rel="noopener noreferrer" style={{color:'#1C05B3'}}>
     postimages.org
   </a>{' '}
-  and use the{' '}
-  <a 
-    href="https://i.postimg.cc/mgwqjcXh/temp-Image21-Fwv-Z.avif"
-    target="_blank"
-    rel="noopener noreferrer"
-    style={{ color: '#1C05B3' }}
-  >
-    "Direct link"
-  </a>{' '}
-  option.
+  and 
 </p>
         {formData.imageUrl && (
           <div className="image-preview-container">
