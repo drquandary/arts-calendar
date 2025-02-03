@@ -22,6 +22,19 @@ const EventCalendar = ({ events: propEvents }) => {
       fetchEvents();
     }
   }, [propEvents]);
+  
+  useEffect(() => {
+  const handleResize = () => {
+    if (window.innerWidth < 768 && view === 'week') {
+      setView('day');
+    }
+  };
+  
+  window.addEventListener('resize', handleResize);
+  handleResize();
+  
+  return () => window.removeEventListener('resize', handleResize);
+}, [view]);
 
   const fetchEvents = async () => {
     try {
