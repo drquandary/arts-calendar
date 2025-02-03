@@ -3,6 +3,7 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  padding-bottom: 80px;
   background: #FAF9F6;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -86,10 +87,6 @@
     padding: 12px 8px; /* Larger touch targets on mobile */
   }
 
-  /* Add bottom padding to account for fixed footer */
-  .event-form {
-    padding-bottom: 80px;
-  }
 }
 .weekday-selector {
   display: flex;
@@ -105,5 +102,14 @@
 }
 
 .weekday-selector input[type="checkbox"] {
+  margin: 0;
+}
+.form-group input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+}
+
+.form-group label.checkbox-label {
+  display: inline;
   margin: 0;
 }

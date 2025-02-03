@@ -161,20 +161,21 @@ export default function EventForm({ onSubmit }) {
         </div>
       </div>
 
-      <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px' }}>
-        <input
-          type="checkbox"
-          id="isRecurring"
-          name="isRecurring"
-          checked={formData.isRecurring}
-          onChange={handleChange}
-          style={{ width: 'auto' }}
-        />
-        <label htmlFor="isRecurring" style={{ display: 'inline', marginBottom: 0 }}>
-          Weekly Recurring Event
-        </label>
-      </div>
-
+    <div className="form-group">
+  <label htmlFor="isRecurring" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#333333' }}>
+    Weekly Recurring Event?
+  </label>
+  <div style={{ display: 'flex', alignItems: 'center' }}>
+    <input
+      type="checkbox"
+      id="isRecurring"
+      name="isRecurring"
+      checked={formData.isRecurring}
+      onChange={handleChange}
+      style={{ width: '20px', height: '20px' }}
+    />
+  </div>
+</div>
       {formData.isRecurring && (
         <div className="form-group">
           <label htmlFor="recurringUntil">End Date*</label>
