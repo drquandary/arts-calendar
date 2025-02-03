@@ -91,3 +91,19 @@
     padding-bottom: 80px;
   }
 }
+.weekday-selector {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.weekday-selector label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.weekday-selector input[type="checkbox"] {
+  margin: 0;
+}
