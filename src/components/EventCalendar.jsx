@@ -23,15 +23,6 @@ const EventCalendar = ({ events: propEvents }) => {
     }
   }, [propEvents]);
   
-  useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth < 768 && view === 'week') {
-      setView('day');
-    }
-  };
-  
-  window.addEventListener('resize', handleResize);
-  handleResize();
   
   return () => window.removeEventListener('resize', handleResize);
 }, [view]);
