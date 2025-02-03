@@ -184,27 +184,33 @@ const renderEvents = () => {
     const weekStart = new Date(currentDate);
     weekStart.setDate(currentDate.getDate() - currentDate.getDay());
     const groupedEvents = groupEventsByDay(getVisibleEvents(), weekStart);
+    const days = [
+      ['Monday', 'Tuesday'],
+      ['Wednesday', 'Thursday'],
+      ['Friday', 'Saturday'],
+      ['Sunday']
+    ];
 
     return (
       <div className="week-view">
-        {Object.entries(groupedEvents).map(([dayName, { date, events }]) => (
-          <div key={dayName} className="day-group">
-            <h2 className="day-header">
-              {dayName}
-            </h2>
-            {events.length > 0 ? (
-              <div className="events-grid">
-                {events.map((event, index) => (
-                  <div key={event.id || index}>
-                    {renderEventCard(event)}
+        {days.map((dayPair, index) => (
+          <div key={index} className="day-pair">
+            {dayPair.map(dayName => (
+              <div key={dayName} className="day-group">
+                <h2 className="day-header">{dayName}</h2>
+                {groupedEvents[dayName]?.events.length > 0 ? (
+                  <div className="events-grid">
+                    {groupedEvents[dayName].events.map((event, idx) => (
+                      <div key={event.id || idx}>
+                        {renderEventCard(event)}
+                      </div>
+                    ))}
                   </div>
-                ))}
+                ) : (
+                  <div className="no-events">No events scheduled</div>
+                )}
               </div>
-            ) : (
-              <div className="no-events">
-                No events scheduled
-              </div>
-            )}
+            ))}
           </div>
         ))}
       </div>
@@ -252,5 +258,4 @@ const renderEvents = () => {
     </div>
   );
 };
-
 export default EventCalendar;

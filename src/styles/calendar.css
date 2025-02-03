@@ -15,6 +15,16 @@ body {
   margin: 0 !important;
   padding: 0 !important;
 }
+.calendar-page {
+  overflow-x: hidden !important;
+  width: 100% !important;
+}
+
+.main-content {
+  padding-bottom: 80px !important; /* Space for fixed footer */
+  overflow-x: hidden !important;
+}
+
 
 .calendar-container {
   width: 100vw !important;
