@@ -23,9 +23,6 @@ const EventCalendar = ({ events: propEvents }) => {
     }
   }, [propEvents]);
   
-  
-  return () => window.removeEventListener('resize', handleResize);
-}, [view]);
 
   const fetchEvents = async () => {
     try {
