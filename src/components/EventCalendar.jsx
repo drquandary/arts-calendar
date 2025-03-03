@@ -14,6 +14,12 @@ const EventCalendar = ({ events: propEvents }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Force week view on initial render
+  useEffect(() => {
+    setView('week');
+    console.log('View initialized to:', 'week');
+  }, []);
+  
   useEffect(() => {
     if (propEvents) {
       setEvents(propEvents);
@@ -22,6 +28,7 @@ const EventCalendar = ({ events: propEvents }) => {
       fetchEvents();
     }
   }, [propEvents]);
+  
   
   const fetchEvents = async () => {
     try {
