@@ -29,7 +29,6 @@ const EventCalendar = ({ events: propEvents }) => {
     }
   }, [propEvents]);
   
-  
   const fetchEvents = async () => {
     try {
       console.log('Fetching events...');
@@ -174,132 +173,133 @@ const EventCalendar = ({ events: propEvents }) => {
   );
 
   const renderEvents = () => {
-  if (view === 'day') {
-    return getVisibleEvents().length > 0 ? (
-      <div className="events-grid">
-        {getVisibleEvents().map((event, index) => (
-          <div key={event.id || index}>
-            {renderEventCard(event)}
-          </div>
-        ))}
-      </div>
-    ) : (
-      <div className="no-events">No events scheduled for today</div>
-    );
-  } else {
-    const weekStart = new Date(currentDate);
-    weekStart.setDate(currentDate.getDate() - currentDate.getDay());
-    const groupedEvents = groupEventsByDay(getVisibleEvents(), weekStart);
-    
-    // Vertically stacked horizontal day pairs
-    return (
-      <div className="week-layout">
-        {/* Monday-Tuesday Pair */}
-        <div className="day-pair">
-          <div className="day-container">
-            <h2 className="day-header">Monday</h2>
-            {groupedEvents['Monday']?.events.length > 0 ? (
-              <div className="events-grid">
-                {groupedEvents['Monday'].events.map((event, idx) => (
-                  <div key={event.id || idx}>{renderEventCard(event)}</div>
-                ))}
-              </div>
-            ) : (
-              <div className="no-events">No events scheduled</div>
-            )}
-          </div>
-          
-          <div className="day-container">
-            <h2 className="day-header">Tuesday</h2>
-            {groupedEvents['Tuesday']?.events.length > 0 ? (
-              <div className="events-grid">
-                {groupedEvents['Tuesday'].events.map((event, idx) => (
-                  <div key={event.id || idx}>{renderEventCard(event)}</div>
-                ))}
-              </div>
-            ) : (
-              <div className="no-events">No events scheduled</div>
-            )}
-          </div>
+    if (view === 'day') {
+      return getVisibleEvents().length > 0 ? (
+        <div className="events-grid">
+          {getVisibleEvents().map((event, index) => (
+            <div key={event.id || index}>
+              {renderEventCard(event)}
+            </div>
+          ))}
         </div>
+      ) : (
+        <div className="no-events">No events scheduled for today</div>
+      );
+    } else {
+      const weekStart = new Date(currentDate);
+      weekStart.setDate(currentDate.getDate() - currentDate.getDay());
+      const groupedEvents = groupEventsByDay(getVisibleEvents(), weekStart);
+      
+      // Vertically stacked horizontal day pairs
+      return (
+        <div className="week-layout">
+          {/* Monday-Tuesday Pair */}
+          <div className="day-pair">
+            <div className="day-container">
+              <h2 className="day-header">Monday</h2>
+              {groupedEvents['Monday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Monday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
+            
+            <div className="day-container">
+              <h2 className="day-header">Tuesday</h2>
+              {groupedEvents['Tuesday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Tuesday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
+          </div>
 
-        {/* Wednesday-Thursday Pair */}
-        <div className="day-pair">
-          <div className="day-container">
-            <h2 className="day-header">Wednesday</h2>
-            {groupedEvents['Wednesday']?.events.length > 0 ? (
-              <div className="events-grid">
-                {groupedEvents['Wednesday'].events.map((event, idx) => (
-                  <div key={event.id || idx}>{renderEventCard(event)}</div>
-                ))}
-              </div>
-            ) : (
-              <div className="no-events">No events scheduled</div>
-            )}
+          {/* Wednesday-Thursday Pair */}
+          <div className="day-pair">
+            <div className="day-container">
+              <h2 className="day-header">Wednesday</h2>
+              {groupedEvents['Wednesday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Wednesday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
+            
+            <div className="day-container">
+              <h2 className="day-header">Thursday</h2>
+              {groupedEvents['Thursday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Thursday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
           </div>
-          
-          <div className="day-container">
-            <h2 className="day-header">Thursday</h2>
-            {groupedEvents['Thursday']?.events.length > 0 ? (
-              <div className="events-grid">
-                {groupedEvents['Thursday'].events.map((event, idx) => (
-                  <div key={event.id || idx}>{renderEventCard(event)}</div>
-                ))}
-              </div>
-            ) : (
-              <div className="no-events">No events scheduled</div>
-            )}
-          </div>
-        </div>
 
-        {/* Friday-Saturday Pair */}
-        <div className="day-pair">
-          <div className="day-container">
-            <h2 className="day-header">Friday</h2>
-            {groupedEvents['Friday']?.events.length > 0 ? (
-              <div className="events-grid">
-                {groupedEvents['Friday'].events.map((event, idx) => (
-                  <div key={event.id || idx}>{renderEventCard(event)}</div>
-                ))}
-              </div>
-            ) : (
-              <div className="no-events">No events scheduled</div>
-            )}
+          {/* Friday-Saturday Pair */}
+          <div className="day-pair">
+            <div className="day-container">
+              <h2 className="day-header">Friday</h2>
+              {groupedEvents['Friday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Friday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
+            
+            <div className="day-container">
+              <h2 className="day-header">Saturday</h2>
+              {groupedEvents['Saturday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Saturday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
           </div>
-          
-          <div className="day-container">
-            <h2 className="day-header">Saturday</h2>
-            {groupedEvents['Saturday']?.events.length > 0 ? (
-              <div className="events-grid">
-                {groupedEvents['Saturday'].events.map((event, idx) => (
-                  <div key={event.id || idx}>{renderEventCard(event)}</div>
-                ))}
-              </div>
-            ) : (
-              <div className="no-events">No events scheduled</div>
-            )}
-          </div>
-        </div>
 
-        {/* Sunday - Single Day */}
-        <div className="day-pair sunday-pair">
-          <div className="day-container">
-            <h2 className="day-header">Sunday</h2>
-            {groupedEvents['Sunday']?.events.length > 0 ? (
-              <div className="events-grid">
-                {groupedEvents['Sunday'].events.map((event, idx) => (
-                  <div key={event.id || idx}>{renderEventCard(event)}</div>
-                ))}
-              </div>
-            ) : (
-              <div className="no-events">No events scheduled</div>
-            )}
+          {/* Sunday - Single Day */}
+          <div className="day-pair sunday-pair">
+            <div className="day-container">
+              <h2 className="day-header">Sunday</h2>
+              {groupedEvents['Sunday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Sunday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    );
-  }
-};
+      );
+    }
+  };
+
   if (isLoading) {
     return <div className="loading">Loading events...</div>;
   }
@@ -310,6 +310,12 @@ const EventCalendar = ({ events: propEvents }) => {
 
   return (
     <div className="calendar-container" style={{ backgroundColor: styles.backgroundColor }}>
+      {/* Calendar Title */}
+      <div className="calendar-title">
+        <h1>CREATIVE CALENDAR</h1>
+        <p>All the happenings in our network. Stay connected to related events in arts, culture, and anthropology at Penn and in Philly.</p>
+      </div>
+      
       <div className="calendar-header">
         <div className="view-controls">
           <button 
