@@ -4,6 +4,8 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
+  overflow-y: visible !important;
+  height: auto !important;
 }
 
 /* Calendar Page Layout */
@@ -14,16 +16,16 @@ body {
   max-width: none !important;
   margin: 0 !important;
   padding: 0 !important;
+  overflow: visible !important;
+  height: auto !important;
 }
 
 .calendar-page {
-  overflow-x: hidden !important;
   width: 100% !important;
 }
 
 .main-content {
   padding-bottom: 80px !important; /* Space for fixed footer */
-  overflow-x: hidden !important;
 }
 
 .calendar-container {
@@ -34,8 +36,9 @@ body {
   background-color: #FAF9F6 !important;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  min-height: 100vh;
-  overflow-x: hidden;
+  min-height: auto !important;
+  height: auto !important;
+  overflow: visible !important;
 }
 
 .debug-info {
@@ -104,7 +107,8 @@ body {
 /* Events Container */
 .events-container {
   width: 100%;
-  overflow-x: hidden;
+  overflow: visible !important;
+  height: auto !important;
 }
 
 /* Events Grid */
@@ -180,6 +184,8 @@ body {
   flex-direction: column !important;
   width: 100% !important;
   padding: 10px !important;
+  overflow: visible !important;
+  height: auto !important;
 }
 
 /* Day Pair - Horizontal Container */
@@ -190,6 +196,8 @@ body {
   margin-bottom: 30px !important;
   border-bottom: 1px solid #eee !important;
   padding-bottom: 20px !important;
+  overflow: visible !important;
+  height: auto !important;
 }
 
 /* Sunday special case - only one day in the pair */
@@ -206,6 +214,8 @@ body {
   width: 50% !important;
   padding: 0 10px !important;
   box-sizing: border-box !important;
+  overflow: visible !important;
+  height: auto !important;
 }
 
 /* Day Header */
@@ -315,4 +325,11 @@ body {
   .events-grid {
     grid-template-columns: 1fr !important;
   }
+}
+
+/* Ensure html element allows full content display */
+html {
+  height: auto !important;
+  min-height: 100% !important;
+  overflow: visible !important;
 }
