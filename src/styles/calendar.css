@@ -176,22 +176,35 @@ body {
 /* Week View */
 .week-view {
   display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
+  grid-template-columns: repeat(2, 1fr) !important; /* Two columns for day pairs */
   gap: 20px !important;
   width: 100% !important;
   padding: 10px !important;
 }
 
-@media (max-width: 768px) {
-  .week-view {
-    grid-template-columns: 1fr !important;
-  }
+.day-pair {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .day-group {
   width: 100% !important;
   min-width: 0 !important; /* Prevents overflow */
   overflow: hidden !important;
+  margin-bottom: 20px !important;
+}
+
+/* Make Sunday take up the full width of its container */
+.day-pair:last-child {
+  grid-column: 1 / -1 !important; /* Span all columns */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .week-view {
+    grid-template-columns: 1fr !important; /* Single column on mobile */
+  }
 }
 
 .day-header {

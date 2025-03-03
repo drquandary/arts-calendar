@@ -8,7 +8,7 @@ const styles = {
 };
 
 const EventCalendar = ({ events: propEvents }) => {
-  const [view, setView] = useState('day');
+  const [view, setView] = useState('week'); // Default to week view
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +23,6 @@ const EventCalendar = ({ events: propEvents }) => {
     }
   }, [propEvents]);
   
-
   const fetchEvents = async () => {
     try {
       console.log('Fetching events...');
@@ -115,108 +114,182 @@ const EventCalendar = ({ events: propEvents }) => {
     });
   };
 
- const renderEventCard = (event) => (
-  <div className="event-card">
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'space-between', 
-      alignItems: 'flex-start'
-    }}>
-      <div className="event-time">
-        {formatTime(event.startTime)}
-        {event.endTime && ` - ${formatTime(event.endTime)}`}
-      </div>
-      <DeleteEventButton 
-        eventId={event.id} 
-        onDeleteSuccess={fetchEvents} 
-      />
-    </div>
-    <div className="event-main">
-      <h3 className="event-title">
-        {event.title}
-      </h3>
-      <p className="event-location">
-        {event.location}
-      </p>
-      <p className="event-category">
-        {event.category}
-      </p>
-      {event.imageUrl && (
-        <div className="event-image-container">
-          <img
-            src={event.imageUrl}
-            alt={event.title}
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.style.display = 'none';
-            }}
-          />
+  const renderEventCard = (event) => (
+    <div className="event-card">
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'flex-start'
+      }}>
+        <div className="event-time">
+          {formatTime(event.startTime)}
+          {event.endTime && ` - ${formatTime(event.endTime)}`}
         </div>
-      )}
-      {event.infoUrl && (
-        <a 
-          href={event.infoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="learn-more-link"
-        >
-          Learn More
-        </a>
-      )}
+        <DeleteEventButton 
+          eventId={event.id} 
+          onDeleteSuccess={fetchEvents} 
+        />
+      </div>
+      <div className="event-main">
+        <h3 className="event-title">
+          {event.title}
+        </h3>
+        <p className="event-location">
+          {event.location}
+        </p>
+        <p className="event-category">
+          {event.category}
+        </p>
+        {event.imageUrl && (
+          <div className="event-image-container">
+            <img
+              src={event.imageUrl}
+              alt={event.title}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.style.display = 'none';
+              }}
+            />
+          </div>
+        )}
+        {event.infoUrl && (
+          <a 
+            href={event.infoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="learn-more-link"
+          >
+            Learn More
+          </a>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 
-const renderEvents = () => {
-  if (view === 'day') {
-    return getVisibleEvents().length > 0 ? (
-      <div className="events-grid">
-        {getVisibleEvents().map((event, index) => (
-          <div key={event.id || index}>
-            {renderEventCard(event)}
+  const renderEvents = () => {
+    if (view === 'day') {
+      return getVisibleEvents().length > 0 ? (
+        <div className="events-grid">
+          {getVisibleEvents().map((event, index) => (
+            <div key={event.id || index}>
+              {renderEventCard(event)}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="no-events">No events scheduled for today</div>
+      );
+    } else {
+      const weekStart = new Date(currentDate);
+      weekStart.setDate(currentDate.getDate() - currentDate.getDay());
+      const groupedEvents = groupEventsByDay(getVisibleEvents(), weekStart);
+      
+      // Create fixed column layout with specific day pairings
+      return (
+        <div className="custom-week-layout">
+          <div className="week-column left-column">
+            <div className="day-container">
+              <h2 className="day-header">Monday</h2>
+              {groupedEvents['Monday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Monday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
+            
+            <div className="day-container">
+              <h2 className="day-header">Tuesday</h2>
+              {groupedEvents['Tuesday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Tuesday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
           </div>
-        ))}
-      </div>
-    ) : (
-      <div className="no-events">No events scheduled for today</div>
-    );
-  } else {
-    const weekStart = new Date(currentDate);
-    weekStart.setDate(currentDate.getDate() - currentDate.getDay());
-    const groupedEvents = groupEventsByDay(getVisibleEvents(), weekStart);
-    const days = [
-      ['Monday', 'Tuesday'],
-      ['Wednesday', 'Thursday'],
-      ['Friday', 'Saturday'],
-      ['Sunday']
-    ];
+          
+          <div className="week-column center-column">
+            <div className="day-container">
+              <h2 className="day-header">Wednesday</h2>
+              {groupedEvents['Wednesday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Wednesday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
+            
+            <div className="day-container">
+              <h2 className="day-header">Thursday</h2>
+              {groupedEvents['Thursday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Thursday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
+          </div>
+          
+          <div className="week-column right-column">
+            <div className="day-container">
+              <h2 className="day-header">Friday</h2>
+              {groupedEvents['Friday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Friday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
+            
+            <div className="day-container">
+              <h2 className="day-header">Saturday</h2>
+              {groupedEvents['Saturday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Saturday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
+          </div>
+          
+          <div className="week-column sunday-column">
+            <div className="day-container">
+              <h2 className="day-header">Sunday</h2>
+              {groupedEvents['Sunday']?.events.length > 0 ? (
+                <div className="events-grid">
+                  {groupedEvents['Sunday'].events.map((event, idx) => (
+                    <div key={event.id || idx}>{renderEventCard(event)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-events">No events scheduled</div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+  };
 
-    return (
-      <div className="week-view">
-        {days.map((dayPair, index) => (
-          <div key={index} className="day-pair">
-            {dayPair.map(dayName => (
-              <div key={dayName} className="day-group">
-                <h2 className="day-header">{dayName}</h2>
-                {groupedEvents[dayName]?.events.length > 0 ? (
-                  <div className="events-grid">
-                    {groupedEvents[dayName].events.map((event, idx) => (
-                      <div key={event.id || idx}>
-                        {renderEventCard(event)}
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="no-events">No events scheduled</div>
-                )}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    );
-  }
-};
   if (isLoading) {
     return <div className="loading">Loading events...</div>;
   }
@@ -258,4 +331,5 @@ const renderEvents = () => {
     </div>
   );
 };
+
 export default EventCalendar;
