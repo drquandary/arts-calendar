@@ -8,6 +8,8 @@ html, body {
   background-color: #000000 !important;
   height: auto !important;
   min-height: 100% !important;
+  position: static !important;
+  -webkit-overflow-scrolling: touch !important;
 }
 
 iframe {
@@ -28,6 +30,7 @@ iframe {
   border: none !important;
   overflow: visible !important;
   height: auto !important;
+  position: static !important;
 }
 
 .calendar-page {
@@ -35,7 +38,7 @@ iframe {
 }
 
 .main-content {
-  padding-bottom: 80px !important; /* Space for fixed footer */
+  padding-bottom: 100px !important; /* Space for fixed footer */
   overflow: visible !important;
 }
 
@@ -51,6 +54,7 @@ iframe {
   min-height: auto !important;
   height: auto !important;
   overflow: visible !important;
+  position: static !important;
 }
 
 /* Import Bebas Neue font family */
@@ -81,10 +85,11 @@ iframe {
   font-weight: 300; /* Light weight */
 }
 
+/* Hide debug info by making it black (same as background) */
 .debug-info {
-  font-size: 12px;
-  color: #D9DDDC; /* Changed to light grey */
-  margin: 10px 0;
+  color: #000000 !important; /* Same as background color */
+  visibility: hidden !important; /* Added to ensure it's completely hidden */
+  display: none !important; /* Added to remove it from the layout completely */
 }
 
 /* Calendar Header */
@@ -150,6 +155,7 @@ iframe {
   width: 100%;
   overflow: visible !important;
   height: auto !important;
+  position: static !important;
 }
 
 /* Events Grid */
@@ -227,6 +233,7 @@ iframe {
   padding: 10px !important;
   overflow: visible !important;
   height: auto !important;
+  position: static !important;
 }
 
 /* Day Pair - Horizontal Container */
@@ -239,6 +246,7 @@ iframe {
   padding-bottom: 20px !important;
   overflow: visible !important;
   height: auto !important;
+  position: static !important;
 }
 
 /* Sunday special case - only one day in the pair */
@@ -257,6 +265,7 @@ iframe {
   box-sizing: border-box !important;
   overflow: visible !important;
   height: auto !important;
+  position: static !important;
 }
 
 /* Day Header */
@@ -286,7 +295,7 @@ iframe {
 
 /* Footer */
 .page-footer {
-  position: fixed !important;
+  position: absolute !important;
   bottom: 0 !important;
   left: 0 !important;
   right: 0 !important;
@@ -333,17 +342,22 @@ iframe {
   font-weight: bold !important;
 }
 
-/* Media Queries for mobile */
+/* Fix for mobile vertical scrolling */
 @media (max-width: 768px) {
-  body, html {
-    -webkit-overflow-scrolling: touch !important; /* Smooth scrolling on iOS */
-    overflow: auto !important;
+  html, body {
+    position: static !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
     height: auto !important;
+    min-height: 100% !important;
   }
   
   .calendar-container {
-    padding: 10px !important; /* Slightly reduce padding on mobile */
+    position: static !important;
+    height: auto !important;
     min-height: auto !important;
+    overflow-y: visible !important;
+    padding: 10px !important; /* Slightly reduce padding on mobile */
   }
   
   .calendar-header {
@@ -372,6 +386,7 @@ iframe {
   .day-pair {
     flex-direction: column !important;
     overflow: visible !important;
+    position: static !important;
   }
   
   .day-container, 
@@ -379,10 +394,29 @@ iframe {
     width: 100% !important;
     padding: 0 !important;
     overflow: visible !important;
+    position: static !important;
   }
   
-  /* Ensure the footer doesn't cover content on small screens */
+  /* Make footer absolute instead of fixed on mobile */
+  .page-footer {
+    position: relative !important;
+    margin-top: 40px !important;
+  }
+  
+  /* Add significant padding to ensure all content is visible */
   .main-content {
-    padding-bottom: 100px !important; /* Extra space for footer */
+    padding-bottom: 150px !important;
+  }
+  
+  /* Week layout fixes */
+  .week-layout {
+    position: static !important;
+    overflow: visible !important;
+  }
+  
+  /* Events container fixes */
+  .events-container {
+    position: static !important;
+    overflow: visible !important;
   }
 }
