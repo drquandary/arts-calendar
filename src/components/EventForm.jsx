@@ -32,21 +32,33 @@ export default function EventForm({ onSubmit }) {
   const startDate = new Date(formData.date);
   const endDate = new Date(formData.recurringUntil);
   
-  // Store the original day of week
-  const dayOfWeek = startDate.getDay();
+  // Store the original day of week (0-6, where 0 is Sunday)
+  const originalDayOfWeek = startDate.getDay();
   
+  // Create recurring event dates
   let currentDate = new Date(startDate);
+  
   while (currentDate <= endDate) {
-    // Create a copy of the current date to avoid modifying the original
-    const eventDate = new Date(currentDate);
-    
+    // Add the current date instance to events
     events.push({
       ...formData,
-      date: eventDate.toISOString().split('T')[0]
+      date: currentDate.toISOString().split('T')[0]
     });
     
-    // Advance to next week
-    currentDate.setDate(currentDate.getDate() + 7);
+    // Calculate the next occurrence (7 days later)
+    const nextDate = new Date(currentDate);
+    nextDate.setDate(nextDate.getDate() + 7);
+    
+    // Check if the day of week is maintained
+    if (nextDate.getDay() !== originalDayOfWeek) {
+      console.warn('Day of week shifted, adjusting date', nextDate);
+      // Calculate how many days to adjust to maintain original day of week
+      const dayShift = ((originalDayOfWeek - nextDate.getDay()) + 7) % 7;
+      nextDate.setDate(nextDate.getDate() + dayShift);
+    }
+    
+    // Update current date to the adjusted next date
+    currentDate = new Date(nextDate);
   }
 }
 
