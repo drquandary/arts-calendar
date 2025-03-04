@@ -166,7 +166,7 @@ html, body {
   flex-direction: row !important;
   width: 100% !important;
   margin-bottom: 30px !important;
-  border-bottom: 1px solid #90D5FF !important;
+  border-bottom: none !important; /* Removed lines */
   padding-bottom: 20px !important;
   overflow: visible !important;
   height: auto !important;
@@ -240,24 +240,32 @@ html, body {
   align-items: center;
   width: 100%;
   margin-bottom: 8px;
-  color: #D9DDDC !important;
-  font-size: 1.5rem !important;
-  font-weight: bold !important;
   border-bottom: 1px solid #90D5FF !important;
   padding-bottom: 2px !important;
 }
 
+/* Time display - larger font */
 .time-display {
-  color: #D9DDDC;
-  font-size: 16px;
-  font-weight: bold;
+  color: #D9DDDC !important;
+  font-size: 18px !important; 
+  font-weight: bold !important;
 }
 
-/* Delete Button Container */
+/* Delete Button Container - independent of time display */
 .delete-button-container {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   margin-left: auto;
-  min-width: 30px;
+}
+
+/* Target the DeleteEventButton component's button */
+.delete-button-container button {
+  font-size: 12px !important; /* Smaller font size for delete button */
+  padding: 2px 6px !important; /* Smaller padding */
+  background-color: transparent !important;
+  color: #ff5555 !important; /* Red color for delete button */
+  border: none !important;
+  cursor: pointer !important;
 }
 
 /* Event content */
@@ -267,7 +275,7 @@ html, body {
 
 /* Event Title */
 .event-title {
-  font-size: 1.3rem !important;
+  font-size: 1.2rem !important; /* Slightly smaller than time (was 1.3rem) */
   margin: 8px 0 !important;
   font-weight: normal !important;
   line-height: 1.4 !important;
@@ -345,7 +353,7 @@ html, body {
 
 /* Footer */
 .page-footer {
-  position: sticky !important;
+  position: fixed !important; /* Changed to fixed from sticky */
   bottom: 0 !important;
   left: 0 !important;
   right: 0 !important;
@@ -353,7 +361,6 @@ html, body {
   padding: 1rem !important;
   box-shadow: 0 -2px 10px rgba(0,0,0,0.5) !important;
   z-index: 100 !important;
-  margin-top: 20px !important;
 }
 
 .nav-links {
@@ -386,6 +393,11 @@ html, body {
   border-bottom: 2px solid #90D5FF;
 }
 
+/* Add padding to bottom of content to prevent footer overlap */
+.calendar-container {
+  padding-bottom: 70px !important; /* Adjust as needed based on footer height */
+}
+
 /* Hide Remix on Glitch button */
 [href*="remix"], [href*="glitch"], .remix-button {
   display: none !important;
@@ -395,6 +407,7 @@ html, body {
 @media (max-width: 768px) {
   .calendar-container {
     padding: 10px !important;
+    padding-bottom: 70px !important; /* Keep footer space on mobile */
     position: static !important;
     height: auto !important;
     min-height: 100vh !important;
@@ -428,6 +441,7 @@ html, body {
     flex-direction: column !important;
     overflow: visible !important;
     position: static !important;
+    border-bottom: none !important;
   }
   
   /* Full width for day containers on mobile */
@@ -439,6 +453,11 @@ html, body {
     position: static !important;
   }
   
+  /* Time display on mobile */
+  .time-display {
+    font-size: 20px !important; /* Slightly smaller on mobile */
+  }
+  
   /* Make sure text doesn't overflow */
   .event-title, 
   .event-location, 
@@ -446,17 +465,6 @@ html, body {
     width: 100%;
     overflow-wrap: break-word;
     word-wrap: break-word;
-  }
-  
-  /* Make footer absolute instead of fixed on mobile */
-  .page-footer {
-    position: relative !important;
-    margin-top: 40px !important;
-  }
-  
-  /* Add significant padding to ensure all content is visible */
-  .main-content {
-    padding-bottom: 150px !important;
   }
   
   /* Week layout fixes */
@@ -480,7 +488,7 @@ html, body {
   }
   
   .time-display {
-    font-size: 14px;
+    font-size: 18px !important; /* Smaller on very small screens */
   }
   
   .event-title {
