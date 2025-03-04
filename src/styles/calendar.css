@@ -31,7 +31,7 @@ body {
   max-width: none !important;
   margin: 0 !important;
   padding: 20px !important;
-  background-color: #FAF9F6 !important;
+  background-color: #000000 !important; /* Changed to black */
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   min-height: 100vh;
@@ -47,14 +47,14 @@ body {
 
 .calendar-title h1 {
   font-size: 25px;
-  color: #4400ff;
+  color: #90D5FF; /* Changed to light blue */
   margin-bottom: 10px;
   font-weight: bold;
 }
 
 .calendar-title p {
   font-size: 16px;
-  color: #333;
+  color: #D9DDDC; /* Changed to light grey */
   max-width: 800px;
   margin: 0 auto;
   line-height: 1.4;
@@ -62,7 +62,7 @@ body {
 
 .debug-info {
   font-size: 12px;
-  color: gray;
+  color: #D9DDDC; /* Changed to light grey */
   margin: 10px 0;
 }
 
@@ -86,7 +86,7 @@ body {
 .date-navigation button {
   background: none;
   border: none;
-  color: #1C05B3;
+  color: #90D5FF; /* Changed to light blue */
   font-size: 1.2rem;
   padding: 4px 8px;
   cursor: pointer;
@@ -97,6 +97,7 @@ body {
   margin: 0;
   font-size: 1.2rem;
   white-space: nowrap;
+  color: #90D5FF; /* Changed to light blue */
 }
 
 /* View Controls */
@@ -106,7 +107,7 @@ body {
 }
 
 .view-button {
-  color: #1C05B3;
+  color: #90D5FF; /* Changed to light blue */
   background: transparent;
   border: none;
   padding: 8px 16px;
@@ -119,8 +120,8 @@ body {
 }
 
 .view-button.active {
-  color: #000000;
-  border-bottom: 2px solid #1C05B3;
+  color: #D9DDDC; /* Changed to light grey */
+  border-bottom: 2px solid #90D5FF; /* Changed to light blue */
 }
 
 /* Events Container */
@@ -151,24 +152,24 @@ body {
 }
 
 .event-time {
-  color: #000 !important;
+  color: #D9DDDC !important; /* Changed to light grey */
   font-size: 1.5rem !important;
   font-weight: bold !important;
-  border-bottom: 1px solid #4400ff !important;
+  border-bottom: 1px solid #90D5FF !important; /* Changed to light blue */
   padding-bottom: 2px !important;
   margin-bottom: 8px !important;
 }
 
 .event-title {
-  font-size: 1.2rem !important;
+  font-size: 1.3rem !important; /* Increased by 4 points (approximately) */
   margin: 8px 0 !important;
   font-weight: normal !important;
   line-height: 1.4 !important;
-  color: #333 !important;
+  color: #90D5FF !important; /* Changed to pretty light blue */
 }
 
 .event-location {
-  color: #4400ff !important;
+  color: #90D5FF !important; /* Changed to light blue */
   font-size: 0.9rem !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
@@ -176,7 +177,7 @@ body {
 }
 
 .event-category {
-  color: #666 !important;
+  color: #D4D4D4 !important; /* Changed to light orange */
   font-size: 0.8rem !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
@@ -210,7 +211,7 @@ body {
   flex-direction: row !important;
   width: 100% !important;
   margin-bottom: 30px !important;
-  border-bottom: 1px solid #eee !important;
+  border-bottom: 1px solid #333 !important; /* Darker separator */
   padding-bottom: 20px !important;
 }
 
@@ -232,10 +233,10 @@ body {
 
 /* Day Header */
 .day-header {
-  color: #4400ff !important;
+  color: #90D5FF !important; /* Changed to light blue */
   font-size: 1.2rem !important;
   font-weight: bold !important;
-  border-bottom: 2px solid #4400ff !important;
+  border-bottom: 2px solid #90D5FF !important; /* Changed to light blue */
   padding: 10px 0 !important;
   margin-bottom: 10px !important;
   margin-top: 15px !important;
@@ -246,7 +247,7 @@ body {
 .no-events {
   padding: 15px !important;
   text-align: center !important;
-  color: #666 !important;
+  color: #D4D4D4 !important; /* Changed to light orange */
   font-style: italic !important;
 }
 
@@ -261,9 +262,9 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  background: #1C05B3;
+  background: #222; /* Darker background */
   padding: 1rem;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
   z-index: 100;
 }
 
@@ -275,7 +276,7 @@ body {
 }
 
 .nav-link {
-  color: #87CEEB;
+  color: #90D5FF; /* Changed to light blue */
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: bold;
@@ -294,7 +295,14 @@ body {
 
 .nav-link.active {
   color: #ffffff;
-  border-bottom: 2px solid #87CEEB;
+  border-bottom: 2px solid #90D5FF; /* Changed to light blue */
+}
+
+/* Learn More link */
+.learn-more-link {
+  color: #90D5FF !important; /* Changed to light blue */
+  text-decoration: underline !important;
+  font-weight: bold !important;
 }
 
 /* Media Queries */
@@ -330,11 +338,5 @@ body {
   .sunday-pair .day-container {
     width: 100% !important;
     padding: 0 !important;
-  }
-}
-
-@media (min-width: 769px) {
-  .events-grid {
-    grid-template-columns: 1fr !important;
   }
 }
