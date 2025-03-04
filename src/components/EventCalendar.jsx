@@ -296,31 +296,3 @@ const EventCalendar = ({ events: propEvents }) => {
           <button className="nav-button" onClick={() => navigateDate(-1)}>←</button>
           <h2 className="current-date">
             {view === 'week' ? 'Week of ' : ''}{formatDate(currentDate)}
-          </h2>
-          <button className="nav-button" onClick={() => navigateDate(1)}>→</button>
-        </div>
-        
-        <div className="view-controls">
-          <button 
-            className={`view-button ${view === 'day' ? 'active' : ''}`}
-            onClick={() => setView('day')}
-          >
-            Day View
-          </button>
-          <button 
-            className={`view-button ${view === 'week' ? 'active' : ''}`}
-            onClick={() => setView('week')}
-          >
-            Week View
-          </button>
-        </div>
-      </div>
-
-      <div className="events-container">
-        {renderEvents()}
-      </div>
-    </div>
-  );
-};
-
-export default EventCalendar;
