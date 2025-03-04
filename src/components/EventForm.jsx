@@ -28,44 +28,47 @@ export default function EventForm({ onSubmit }) {
 
     try {
       const events = [];
-     if (formData.isRecurring && formData.recurringUntil) {
-  const startDate = new Date(formData.date);
-  const endDate = new Date(formData.recurringUntil);
-  
-  // Store the original day of week (0-6, where 0 is Sunday)
-  const originalDayOfWeek = startDate.getDay();
-  
-  // Create recurring event dates
-  let currentDate = new Date(startDate);
-  
-  while (currentDate <= endDate) {
-    // Add the current date instance to events
-    events.push({
-      ...formData,
-      date: currentDate.toISOString().split('T')[0]
-    });
-    
-    // Calculate the next occurrence (7 days later)
-    const nextDate = new Date(currentDate);
-    nextDate.setDate(nextDate.getDate() + 7);
-    
-    // Check if the day of week is maintained
-    if (nextDate.getDay() !== originalDayOfWeek) {
-      console.warn('Day of week shifted, adjusting date', nextDate);
-      // Calculate how many days to adjust to maintain original day of week
-      const dayShift = ((originalDayOfWeek - nextDate.getDay()) + 7) % 7;
-      nextDate.setDate(nextDate.getDate() + dayShift);
-    }
-    
-    // Update current date to the adjusted next date
-    currentDate = new Date(nextDate);
-  }
-}
+      if (formData.isRecurring && formData.recurringUntil) {
+        const startDate = new Date(formData.date);
+        const endDate = new Date(formData.recurringUntil);
+        
+        // Ensure the start of the end date is used for comparison
+        endDate.setHours(0, 0, 0, 0);
+        
+        // Get the original day of week to maintain consistency
+        const originalDayOfWeek = startDate.getDay();
+        
+        // Create recurring event dates
+        let currentDate = new Date(startDate);
+        
+        while (currentDate <= endDate) {
+          // Clone the current date and ensure it's on the correct day of week
+          const eventDate = new Date(currentDate);
+          
+          events.push({
+            ...formData,
+            date: eventDate.toISOString().split('T')[0]
+          });
+          
+          // Move to next week, always maintaining the original day of week
+          currentDate.setDate(currentDate.getDate() + 7);
+          
+          // Ensure the day of week matches the original
+          while (currentDate.getDay() !== originalDayOfWeek) {
+            currentDate.setDate(currentDate.getDate() + 1);
+          }
+        }
+      } else {
+        // If not recurring, just add the single event
+        events.push(formData);
+      }
 
+      // Submit each event
       for (const event of events) {
         await onSubmit(event);
       }
 
+      // Reset form
       setFormData({
         title: "",
         organization: "",
@@ -180,21 +183,22 @@ export default function EventForm({ onSubmit }) {
         </div>
       </div>
 
-    <div className="form-group">
-  <label htmlFor="isRecurring" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#333333' }}>
-    Weekly Recurring Event?
-  </label>
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <input
-      type="checkbox"
-      id="isRecurring"
-      name="isRecurring"
-      checked={formData.isRecurring}
-      onChange={handleChange}
-      style={{ width: '20px', height: '20px' }}
-    />
-  </div>
-</div>
+      <div className="form-group">
+        <label htmlFor="isRecurring" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#333333' }}>
+          Weekly Recurring Event?
+        </label>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <input
+            type="checkbox"
+            id="isRecurring"
+            name="isRecurring"
+            checked={formData.isRecurring}
+            onChange={handleChange}
+            style={{ width: '20px', height: '20px' }}
+          />
+        </div>
+      </div>
+
       {formData.isRecurring && (
         <div className="form-group">
           <label htmlFor="recurringUntil">End Date*</label>
