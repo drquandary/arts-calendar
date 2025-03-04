@@ -311,11 +311,13 @@ const EventCalendar = ({ events: propEvents }) => {
   return (
     <div className="calendar-container" style={{ backgroundColor: styles.backgroundColor }}>
       {/* Calendar Title */}
-      <div className="calendar-title">
-        <h1>CREATIVE CALENDAR</h1>
-        <p>All the happenings in our network. Stay connected to related events in arts, culture, and anthropology at Penn and in Philly.</p>
-      </div>
-      
+     {/* Calendar Title */}
+        <div className="calendar-title">
+          <h1>
+            <span className="creative">COMMUNITY</span> <span className="calendar">HAPPENINGS</span>
+          </h1>
+        </div>
+  
       <div className="calendar-header">
         <div className="view-controls">
           <button 
