@@ -28,20 +28,27 @@ export default function EventForm({ onSubmit }) {
 
     try {
       const events = [];
-      if (formData.isRecurring && formData.recurringUntil) {
-        const startDate = new Date(formData.date);
-        const endDate = new Date(formData.recurringUntil);
-        
-        while (startDate <= endDate) {
-          events.push({
-            ...formData,
-            date: startDate.toISOString().split('T')[0]
-          });
-          startDate.setDate(startDate.getDate() + 7);
-        }
-      } else {
-        events.push(formData);
-      }
+     if (formData.isRecurring && formData.recurringUntil) {
+  const startDate = new Date(formData.date);
+  const endDate = new Date(formData.recurringUntil);
+  
+  // Store the original day of week
+  const dayOfWeek = startDate.getDay();
+  
+  let currentDate = new Date(startDate);
+  while (currentDate <= endDate) {
+    // Create a copy of the current date to avoid modifying the original
+    const eventDate = new Date(currentDate);
+    
+    events.push({
+      ...formData,
+      date: eventDate.toISOString().split('T')[0]
+    });
+    
+    // Advance to next week
+    currentDate.setDate(currentDate.getDate() + 7);
+  }
+}
 
       for (const event of events) {
         await onSubmit(event);
