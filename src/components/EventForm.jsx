@@ -32,32 +32,65 @@ export default function EventForm({ onSubmit }) {
         const startDate = new Date(formData.date);
         const endDate = new Date(formData.recurringUntil);
         
+        // EXTREMELY VERBOSE DEBUGGING
+        console.group('Recurring Event Detailed Diagnostic');
+        console.log('Initial Start Date (Raw):', startDate);
+        console.log('Initial Start Date (ISO):', startDate.toISOString());
+        console.log('Initial Start Date (Formatted):', 
+          `Year: ${startDate.getFullYear()}, 
+          Month: ${startDate.getMonth() + 1}, 
+          Date: ${startDate.getDate()}, 
+          Day of Week: ${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][startDate.getDay()]}`
+        );
+        
         // Ensure the start of the end date is used for comparison
         endDate.setHours(0, 0, 0, 0);
         
         // Get the original day of week to maintain consistency
         const originalDayOfWeek = startDate.getDay();
+        console.log('Original Day of Week:', 
+          ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][originalDayOfWeek]
+        );
         
         // Create recurring event dates
         let currentDate = new Date(startDate);
         
-        while (currentDate <= endDate) {
-          // Clone the current date and ensure it's on the correct day of week
+        let eventCount = 0;
+        while (currentDate <= endDate && eventCount < 52) { // Prevent infinite loop, max 1 year
+          // Clone the current date
           const eventDate = new Date(currentDate);
+          
+          console.log(`Event ${eventCount + 1} Diagnostic:`);
+          console.log('  Raw Date:', eventDate);
+          console.log('  ISO Date:', eventDate.toISOString());
+          console.log('  Formatted Date:', 
+            `Year: ${eventDate.getFullYear()}, 
+            Month: ${eventDate.getMonth() + 1}, 
+            Date: ${eventDate.getDate()}, 
+            Day of Week: ${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][eventDate.getDay()]}`
+          );
           
           events.push({
             ...formData,
             date: eventDate.toISOString().split('T')[0]
           });
           
-          // Move to next week, always maintaining the original day of week
+          // CRITICAL: Explicitly add 7 days
           currentDate.setDate(currentDate.getDate() + 7);
           
-          // Ensure the day of week matches the original
-          while (currentDate.getDay() !== originalDayOfWeek) {
-            currentDate.setDate(currentDate.getDate() + 1);
-          }
+          console.log('  Next Iteration Date Diagnostic:');
+          console.log('    Raw Next Date:', currentDate);
+          console.log('    ISO Next Date:', currentDate.toISOString());
+          console.log('    Next Date Day of Week:', 
+            ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][currentDate.getDay()]
+          );
+          
+          eventCount++;
         }
+        
+        console.log('Total Recurring Events Generated:', events.length);
+        console.log('Generated Event Dates:', events.map(e => e.date));
+        console.groupEnd();
       } else {
         // If not recurring, just add the single event
         events.push(formData);
