@@ -72,28 +72,48 @@ const EventCalendar = ({ events: propEvents }) => {
     const hour12 = hour % 12 || 12;
     return `${hour12}:${minutes} ${ampm}`;
   };
-
-  const groupEventsByDay = (events, weekStart) => {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const groupedEvents = {};
+const groupEventsByDay = (events, weekStart) => {
+  console.log('Week start date:', weekStart);
+  
+  // Fix any potential issues with weekStart
+  const correctedWeekStart = new Date(weekStart);
+  correctedWeekStart.setHours(0, 0, 0, 0); // Set to midnight
+  
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const groupedEvents = {};
+  
+  // Initialize the days with corrected dates
+  for (let i = 0; i < 7; i++) {
+    const dayDate = new Date(correctedWeekStart);
+    dayDate.setDate(correctedWeekStart.getDate() + i);
+    const dayOfWeek = dayDate.getDay();
+    const dayName = days[dayOfWeek];
     
-    for (let i = 0; i < 7; i++) {
-      const currentDate = new Date(weekStart);
-      currentDate.setDate(weekStart.getDate() + i);
-      groupedEvents[days[i]] = {
-        date: currentDate,
-        events: []
-      };
-    }
-
-    events.forEach(event => {
-      const eventDate = new Date(event.date + 'T00:00:00');
-      const dayName = days[eventDate.getDay()];
-      groupedEvents[dayName].events.push(event);
-    });
-
-    return groupedEvents;
-  };
+    groupedEvents[dayName] = {
+      date: dayDate,
+      events: []
+    };
+    console.log(`Created day: ${dayName}, date: ${dayDate.toISOString().split('T')[0]}`);
+  }
+  
+  // Log all events for debugging
+  console.log('All events to be placed:', events.map(e => `${e.title} - ${e.date}`));
+  
+  // Force events to correct days based on their actual day of week
+  events.forEach(event => {
+    // Parse the event date carefully
+    const eventDate = new Date(event.date + 'T00:00:00');
+    const eventDayOfWeek = eventDate.getDay();
+    const dayName = days[eventDayOfWeek];
+    
+    console.log(`Event "${event.title}" date: ${event.date}, day: ${dayName}`);
+    
+    // Add to the corresponding day
+    groupedEvents[dayName].events.push(event);
+  });
+  
+  return groupedEvents;
+};
 
   const getVisibleEvents = () => {
     return events.filter(event => {

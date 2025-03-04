@@ -55,6 +55,7 @@ iframe {
   height: auto !important;
   overflow: visible !important;
   position: static !important;
+  
 }
 
 /* Import Bebas Neue font family */
@@ -295,14 +296,15 @@ iframe {
 
 /* Footer */
 .page-footer {
-  position: absolute !important;
+  position: sticky !important; /* Change from fixed/absolute to sticky */
   bottom: 0 !important;
   left: 0 !important;
   right: 0 !important;
-  background: #222 !important; /* Darker background */
+  background: #222222!important;
   padding: 1rem !important;
   box-shadow: 0 -2px 10px rgba(0,0,0,0.5) !important;
   z-index: 100 !important;
+  margin-top: 20px !important; /* Add space above footer */
 }
 
 .nav-links {
@@ -355,9 +357,12 @@ iframe {
   .calendar-container {
     position: static !important;
     height: auto !important;
-    min-height: auto !important;
+    min-height: 100vh !important;
     overflow-y: visible !important;
     padding: 10px !important; /* Slightly reduce padding on mobile */
+    display: flex !important;
+    flex-direction: column !important;
+   /* Ensure full height */
   }
   
   .calendar-header {
@@ -418,5 +423,6 @@ iframe {
   .events-container {
     position: static !important;
     overflow: visible !important;
-  }
+    flex: 1 !important; /* Take remaining space */
 }
+  }
