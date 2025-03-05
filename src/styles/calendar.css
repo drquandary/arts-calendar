@@ -247,7 +247,7 @@ html, body {
 /* Time display - larger font */
 .time-display {
   color: #D9DDDC !important;
-  font-size: 18px !important; 
+  font-size: 1.2rem !important; 
   font-weight: bold !important;
 }
 
@@ -275,7 +275,7 @@ html, body {
 
 /* Event Title */
 .event-title {
-  font-size: 1.2rem !important; /* Slightly smaller than time (was 1.3rem) */
+  font-size: 1.0rem !important; /* Slightly smaller than time (was 1.3rem) */
   margin: 8px 0 !important;
   font-weight: normal !important;
   line-height: 1.4 !important;
@@ -455,7 +455,7 @@ html, body {
   
   /* Time display on mobile */
   .time-display {
-    font-size: 20px !important; /* Slightly smaller on mobile */
+    font-size: 1.0rem !important; /* Slightly smaller on mobile */
   }
   
   /* Make sure text doesn't overflow */
