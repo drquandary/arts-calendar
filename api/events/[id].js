@@ -1,16 +1,14 @@
-// Import the same events array from the main events API
-// Note: In a real application, you'd use a shared database
-let events = [];
+module.exports = function handler(req, res) {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-// This is a workaround for the in-memory storage limitation
-// In production, use a proper database service
-const getEventsFromStorage = () => {
-  // This would normally fetch from a database
-  // For now, we'll work with a minimal implementation
-  return [];
-};
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
 
-export default function handler(req, res) {
   const { id } = req.query;
 
   if (req.method === 'DELETE') {
@@ -27,4 +25,4 @@ export default function handler(req, res) {
     res.setHeader('Allow', ['DELETE']);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-}
+};
