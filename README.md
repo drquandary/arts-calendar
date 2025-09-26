@@ -77,6 +77,9 @@ npm run build
 
 The `build` folder contains the production-ready files.
 
+## Live Demo
+🌐 **Live App**: https://arts-calendar.vercel.app/
+
 ## Prerequisites
 
 You'll get best use out of this project if you're familiar with basic JavaScript. This project is a static site, which means that the server builds the site from the content of the `src` folder while you're developing it, then it's able to serve the pages super quickly when the user requests them.
