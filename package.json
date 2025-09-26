@@ -9,7 +9,8 @@
     "start": "node server.js",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "vercel-build": "vite build"
   },
   "dependencies": {
     "@react-spring/web": "^9.7.3",

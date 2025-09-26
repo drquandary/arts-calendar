@@ -1,12 +1,72 @@
-# Hello React!
+# Arts Calendar
 
-This project contains a foundation for building and learning about React apps. The site includes two routes showing how navigation works in a single page app. We manage the page head and body using a standard React flow. The homepage features a click effect that demonstrates using state, and an animation you can try out yourself by following the steps in `TODO.md`. 💫
+A React calendar application for managing arts events with a Node.js/SQLite backend.
 
-[React](https://reactjs.org/) is a popular UI library for building web apps. [Vite](https://vitejs.dev/) is a powerful tool for building javascript apps that bundles all of your code and shows immediate changes while you're editing.
+## Features
 
-_While you're in the editor working, Glitch is running your `start` script in the background (`vite dev`). The site will be in dev mode and you'll see your changes happen ✨ immediately in the preview window. Once you close the editor window and your app goes to sleep, Glitch runs the `build` script and Vite builds your app for modern browsers._
+- **Event Management**: Create, view, and delete arts events
+- **Calendar View**: Interactive calendar interface built with React
+- **Database**: SQLite database for data persistence
+- **Password Protection**: Secure event creation and deletion
+- **Responsive Design**: Mobile-friendly interface
 
-_Last updated: 14 August 2023_
+## Tech Stack
+
+- **Frontend**: React 18, Vite, React Router
+- **Backend**: Node.js, Express, SQLite3
+- **Deployment**: Vercel (serverless functions)
+- **Styling**: CSS with responsive design
+
+## Getting Started
+
+### Prerequisites
+- Node.js 16.x or higher
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/drquandary/arts-calendar.git
+cd arts-calendar
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
+
+## Deployment
+
+### Vercel Deployment
+
+This app is configured for deployment on Vercel:
+
+1. Connect your GitHub repository to Vercel
+2. Vercel will automatically detect the build settings
+3. Deploy with one click!
+
+The app includes:
+- Serverless API functions in `/api` directory
+- Automatic static file serving
+- Database handling with SQLite
+
+### Manual Deployment
+
+To deploy manually:
+
+```bash
+npm run build
+```
+
+The `build` folder contains the production-ready files.
 
 ## Prerequisites
 
