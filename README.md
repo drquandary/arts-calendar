@@ -13,9 +13,18 @@ A React calendar application for managing arts events with a Node.js/SQLite back
 ## Tech Stack
 
 - **Frontend**: React 18, Vite, React Router
-- **Backend**: Node.js, Express, SQLite3
+- **Backend**: Node.js serverless functions
+- **Database**: In-memory storage (demo) - ready for database integration
 - **Deployment**: Vercel (serverless functions)
 - **Styling**: CSS with responsive design
+
+## Database Note
+
+This demo uses in-memory storage which resets on each deployment. For production use, integrate with:
+- **Vercel Postgres** (recommended for Vercel)
+- **MongoDB Atlas**
+- **PlanetScale**
+- **Supabase**
 
 ## Getting Started
 

@@ -1,47 +1,36 @@
-import sqlite3 from 'sqlite3';
-import { promisify } from 'util';
-
-// Initialize database
-let db;
-
-const initDb = () => {
-  if (!db) {
-    db = new sqlite3.Database('/tmp/sqlite.db');
-
-    // Create table if it doesn't exist
-    const createTable = `CREATE TABLE IF NOT EXISTS events (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT NOT NULL,
-      organization TEXT NOT NULL,
-      date TEXT NOT NULL,
-      startTime TEXT NOT NULL,
-      endTime TEXT NOT NULL,
-      location TEXT NOT NULL,
-      category TEXT NOT NULL,
-      imageUrl TEXT,
-      infoUrl TEXT,
-      password TEXT NOT NULL,
-      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-    )`;
-
-    db.run(createTable);
+// Simple in-memory storage for demo purposes
+// In production, you'd want to use a proper database like Vercel Postgres or MongoDB
+let events = [
+  {
+    id: 1,
+    title: "Sample Art Exhibition",
+    organization: "City Gallery",
+    date: "2025-10-15",
+    startTime: "18:00",
+    endTime: "21:00",
+    location: "Downtown Gallery",
+    category: "Visual Arts",
+    imageUrl: "",
+    infoUrl: "",
+    password: "ceelovesya",
+    createdAt: new Date().toISOString()
   }
-  return db;
-};
+];
+
+let nextId = 2;
 
 export default function handler(req, res) {
-  const database = initDb();
-
   if (req.method === 'GET') {
-    // Get all events
-    database.all('SELECT * FROM events ORDER BY date, startTime', [], (err, rows) => {
-      if (err) {
-        console.error('Database error:', err);
-        res.status(500).json({ error: err.message });
-        return;
-      }
-      res.json(rows);
-    });
+    // Get all events, sorted by date and time
+    const sortedEvents = events
+      .slice()
+      .sort((a, b) => {
+        const dateA = new Date(a.date + ' ' + a.startTime);
+        const dateB = new Date(b.date + ' ' + b.startTime);
+        return dateA - dateB;
+      });
+
+    res.json(sortedEvents);
   } else if (req.method === 'POST') {
     // Add new event
     const { title, organization, date, startTime, endTime, location, category, imageUrl, infoUrl, password } = req.body;
@@ -50,24 +39,27 @@ export default function handler(req, res) {
       return res.status(401).json({ error: 'Incorrect password' });
     }
 
-    const sql = `
-      INSERT INTO events (title, organization, date, startTime, endTime, location, category, imageUrl, infoUrl, password)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+    const newEvent = {
+      id: nextId++,
+      title,
+      organization,
+      date,
+      startTime,
+      endTime,
+      location,
+      category,
+      imageUrl: imageUrl || '',
+      infoUrl: infoUrl || '',
+      password,
+      createdAt: new Date().toISOString()
+    };
 
-    database.run(sql, [title, organization, date, startTime, endTime, location, category, imageUrl, infoUrl, password],
-      function(err) {
-        if (err) {
-          console.error('Database insert error:', err);
-          res.status(500).json({ error: err.message });
-          return;
-        }
-        res.json({
-          id: this.lastID,
-          message: 'Event added successfully'
-        });
-      }
-    );
+    events.push(newEvent);
+
+    res.json({
+      id: newEvent.id,
+      message: 'Event added successfully'
+    });
   } else {
     res.setHeader('Allow', ['GET', 'POST']);
     res.status(405).end(`Method ${req.method} Not Allowed`);
